@@ -1,0 +1,74 @@
+<html>
+
+<head>
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main-styles/global.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main-styles/bundle.css') }}">
+
+</head>
+
+<body style="padding-bottom: 100px;">
+
+<header><div class="flex"><script>random_djinn()
+    function random_djinn(){
+     var djinni = ["Djinn.gif","Mars.gif","Mercury.gif","Jupiter.gif"];
+     var num = Math.floor(Math.random()*4);
+     document.getElementById("djini").src ="{{ url_for('static',filename='styles/main-styles/assets/"+djinni[num]+"') }}";
+  
+  }</script> <div class="h1"><img alt="va" id="djini" src="{{ url_for('static',filename='styles/main-styles/assets/Djinn.gif') }}" class="img-djinn"> 
+     <h1>ABOUT ME</h1></div> <div class="static" id="statica"><h2 style="text-align: center; color: gold;">
+Thrypuro</h2>        
+Computer Science and Mathematics student at University of Edinburgh. 
+Keen on their interests and trying their best!</div></div></header> 
+<main><div class="body" id="ok" ><p style="margin-left: auto;padding-left:5%;padding-right: 5%;white-space: pre-line;letter-spacing: -1px; word-spacing: 4px;">Mainly interested in Pure Mathematics (Group Theory, geometry and linear algebra) but also some Applied Mathematics (Cryptography). Security, Operating systems in Computer Science. 
+
+I play CTF's frequently, a lot by myself but also with <a href="https://sigint.mx/" style="color: black; text-shadow: none;">SIGINT</a> and <a href="https://ctftime.org/team/48976" style="color: black; text-shadow: none;">the_cr0wn</a>. Mainly do Cryptography challenges, as it is a big interest of mine, but also want to get better at other categories.
+
+You can find me either playing some CTF's, messing around with some old Nintendo console games, reading books, or just procastinating by watching some geeky video or just playing some obscure strategy game/jrpg.
+
+The blog posts are going to just be me talking about my interests (Personal-diary/Projects/Writeups), i.e, <a href="http://www.cryptoisnotcryptocurrency.com/" style="color: black; text-shadow: none;">Crypto</a>, Maths and computer science related stuff or just what I have been upto or reading.</p></div></main> <footer><script>function hi(text1){
+     document.getElementById("desc").innerHTML = text1;
+ }
+ function fun(a){var b = "";for (let i=0; i<a.length;i++){if(a[i]%2!=0){b+=(String.fromCharCode(a[i]^42));}else{b+=(String.fromCharCode(a[i]^68));}}  return b;}
+ function flee(){
+     var num = Math.floor(Math.random()*100);
+     /* I see you're curious ;)*/
+     if(num==69){
+       var ch = [44, 48, 48, 52, 89, 126, 5, 5, 83, 69, 95, 48, 95, 106, 38, 79, 5, 32, 123, 93, 112, 93, 19, 125, 77, 28, 73, 123];
+       var ct = [32, 75, 71, 81, 32, 75, 48, 117, 93, 75, 89, 117, 79, 62, 87];
+       var t = fun(ch);
+       document.getElementById("Flee").href = t; }
+     else{
+         
+     }
+     
+ }
+ var ina = document.getElementById("insap");
+ 
+ 
+ function inspa(){
+    document.getElementById("insap").style.display = "block";
+ }
+ window.onclick = function(event) {
+     if (event.target == ina) {
+         ina.style.display = "none";
+         }
+      }</script> 
+<script>function hide(){
+  document.getElementById("hia").style.display = "block";
+  document.getElementById("hnav").style.display = "none";   
+}
+function unhide(){
+ document.getElementById("hia").style.display = "none";
+  document.getElementById("hnav").style.display = "block";   
+
+}</script></footer></body>
+<nav id="hia">
+    <a href="/blog"><img id="Blog" class="scaler1 img-blog" src="{{ url_for('static',filename='styles/main-styles/assets/Status.png') }}" alt="aaa" onmouseover="hi('Blog')" onmouseout="hi('Navigation')"></a>
+
+    <a href="/about"><img id="About me" class="scaler1 img-about" src="{{ url_for('static',filename='styles/main-styles/assets/aboutme.png') }}" alt="aaa" onmouseover="hi('About me')" onmouseout="hi('Navigation')"></a>
+
+    <a href="/"><img id="flee" class="scaler1 img-home" src="{{ url_for('static',filename='styles/main-styles/assets/Flee.gif') }}" alt="aaa" style="" onmouseover="hi('Flee (Home)')" onmouseout="hi('Navigation')" onclick="flee()"></a>
+
+    <div class="navi" id="desc">Navigation</div>
+</nav>
+</html>
