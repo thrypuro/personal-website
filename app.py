@@ -23,7 +23,7 @@ def index():
         a.append(page)
     return render_template('index.html', pages=a,len=len(a))
 
-@app.route('/about')
+@app.route('/about.html')
 def about():
     return render_template('about.html')
 def day(i):
@@ -35,7 +35,7 @@ def day(i):
       return "3rd"
   else:
       return i+"th"
-@app.route('/blog')
+@app.route('/blog.html')
 def blog():
 
 

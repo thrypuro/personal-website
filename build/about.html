@@ -1,14 +1,14 @@
 <html>
 
 <head>
-	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main-styles/global.css') }}">
-	<link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='styles/main-styles/bundle.css') }}">
+	<link rel= "stylesheet" type= "text/css" href= "/static/styles/main-styles/global.css">
+	<link rel= "stylesheet" type= "text/css" href= "/static/styles/main-styles/bundle.css">
 
 </head>
 
 <body style="padding-bottom: 100px;">
 
-<header><div class="flex"> <div class="h1"><img alt="va" id="djini" src="{{ url_for('static',filename='styles/main-styles/assets/Djinn.gif') }}" class="img-djinn"> 
+<header><div class="flex"> <div class="h1"><img alt="va" id="djini" src="/static/styles/main-styles/assets/Djinn.gif" class="img-djinn"> 
      <h1>ABOUT ME</h1></div> <div class="static" id="statica"><h2 style="text-align: center; color: gold;">
 Thrypuro</h2>        
 Computer Science and Mathematics student at University of Edinburgh. 
@@ -57,11 +57,11 @@ function unhide(){
 
 }</script></footer></body>
 <nav id="hia">
-    <a href="/blog"><img id="Blog" class="scaler1 img-blog" src="{{ url_for('static',filename='styles/main-styles/assets/Status.png') }}" alt="aaa" onmouseover="hi('Blog')" onmouseout="hi('Navigation')"></a>
+    <a href="/blog"><img id="Blog" class="scaler1 img-blog" src="/static/styles/main-styles/assets/Status.png" alt="aaa" onmouseover="hi('Blog')" onmouseout="hi('Navigation')"></a>
 
-    <a href="/about"><img id="About me" class="scaler1 img-about" src="{{ url_for('static',filename='styles/main-styles/assets/aboutme.png') }}" alt="aaa" onmouseover="hi('About me')" onmouseout="hi('Navigation')"></a>
+    <a href="/about"><img id="About me" class="scaler1 img-about" src="/static/styles/main-styles/assets/aboutme.png" alt="aaa" onmouseover="hi('About me')" onmouseout="hi('Navigation')"></a>
 
-    <a href="/"><img id="flee" class="scaler1 img-home" src="{{ url_for('static',filename='styles/main-styles/assets/Flee.gif') }}" alt="aaa" style="" onmouseover="hi('Flee (Home)')" onmouseout="hi('Navigation')" onclick="flee()"></a>
+    <a href="/"><img id="flee" class="scaler1 img-home" src="/static/styles/main-styles/assets/Flee.gif" alt="aaa" style="" onmouseover="hi('Flee (Home)')" onmouseout="hi('Navigation')" onclick="flee()"></a>
 
     <div class="navi" id="desc">Navigation</div>
 </nav>

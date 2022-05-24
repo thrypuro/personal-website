@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Retro</title>
+    <link rel= "stylesheet" type= "text/css" href= "/static/styles/main-styles/stolen.css">
+    <script src="/socket.io/socket.io.js"></script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/MathJax.js?config=TeX-MML-AM_CHTML" async=""></script>
+    <script src="https://cdn.jsdelivr.net/npm/mermaid/dist/mermaid.min.js"></script>
+    <script>
+      mermaid.initialize({ startOnLoad: true });
+    </script>
+    <script>
+      var socket = io();
+      socket.on('markdown', function (msg) {
+        document.getElementById('markdown').innerHTML = msg;
+        var cursor = document.getElementById('instant-markdown-cursor');
+        if (cursor) {
+          cursor.scrollIntoView();
+        }
+
+        mermaid.init();
+        MathJax.Hub.Queue(['Typeset', MathJax.Hub]);
+      });
+      socket.on('disconnect', function () {
+        window.close();
+      });
+    </script>
+  <script type="text/x-mathjax-config;executed=true">MathJax.Hub.Register.StartupHook("NativeMML Jax Ready", function () {MathJax.OutputJax.NativeMML.Augment({preTranslate: function (state) {
+  var scripts = state.jax[this.id];
+  for (var i = 0; i < scripts.length; i++) {
+    var script = scripts[i]; if (!script.parentNode) continue;
+    // Remove any existing output
+    var prev = script.previousSibling;
+    if (prev && prev.className === "MathJax_MathML")
+      prev.parentNode.removeChild(prev);
+    // Add the MathJax span
+    var jax = script.MathJax.elementJax; if (!jax) continue;
+    var math = jax.root; jax.NativeMML = {};
+    var type = (math.Get("display") === "block" ? "div" : "span");
+    var span = MathJax.HTML.Element(type,{
+      className: "MathJax_MathML", id:jax.inputID+"-Frame"
+    },[["span",{
+      className:"MathJax_MathContainer", isMathJax: true, jaxID:this.id,
+    },[["span",{isMathJax:true}]]
+    ]]);
+    script.parentNode.insertBefore(span,script);
+  }
+}});MathJax.OutputJax.NativeMML.ffTableWidthBug = false;MathJax.OutputJax.NativeMML.forceReflow = false;MathJax.OutputJax.NativeMML.widthBug = false;MathJax.OutputJax.NativeMML.spaceWidthBug = false;MathJax.OutputJax.NativeMML.mtdWidthBug = false;});MathJax.Hub.Register.StartupHook("End Extensions", function () {if (MathJax.Extension.mml2jax) {  for (var i=0,m=MathJax.Hub.preProcessors.hooks.length; i < m; i++) {    if (MathJax.Hub.preProcessors.hooks[i].hook ===        MathJax.Extension.mml2jax.PreProcess)      { MathJax.Hub.preProcessors.hooks.splice(i,1); i--; m--; }  }}});</script><style type="text/css">.MathJax_Hover_Frame {border-radius: .25em; -webkit-border-radius: .25em; -moz-border-radius: .25em; -khtml-border-radius: .25em; box-shadow: 0px 0px 15px #83A; -webkit-box-shadow: 0px 0px 15px #83A; -moz-box-shadow: 0px 0px 15px #83A; -khtml-box-shadow: 0px 0px 15px #83A; border: 1px solid #A6D ! important; display: inline-block; position: absolute}
+.MathJax_Menu_Button .MathJax_Hover_Arrow {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 4px; -webkit-border-radius: 4px; -moz-border-radius: 4px; -khtml-border-radius: 4px; font-family: 'Courier New',Courier; font-size: 9px; color: #F0F0F0}
+.MathJax_Menu_Button .MathJax_Hover_Arrow span {display: block; background-color: #AAA; border: 1px solid; border-radius: 3px; line-height: 0; padding: 4px}
+.MathJax_Hover_Arrow:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_Hover_Arrow:hover span {background-color: #CCC!important}
+</style><style type="text/css">#MathJax_About {position: fixed; left: 50%; width: auto; text-align: center; border: 3px outset; padding: 1em 2em; background-color: #DDDDDD; color: black; cursor: default; font-family: message-box; font-size: 120%; font-style: normal; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 15px; -webkit-border-radius: 15px; -moz-border-radius: 15px; -khtml-border-radius: 15px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_About.MathJax_MousePost {outline: none}
+.MathJax_Menu {position: absolute; background-color: white; color: black; width: auto; padding: 5px 0px; border: 1px solid #CCCCCC; margin: 0; cursor: default; font: menu; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; z-index: 201; border-radius: 5px; -webkit-border-radius: 5px; -moz-border-radius: 5px; -khtml-border-radius: 5px; box-shadow: 0px 10px 20px #808080; -webkit-box-shadow: 0px 10px 20px #808080; -moz-box-shadow: 0px 10px 20px #808080; -khtml-box-shadow: 0px 10px 20px #808080; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+.MathJax_MenuItem {padding: 1px 2em; background: transparent}
+.MathJax_MenuArrow {position: absolute; right: .5em; padding-top: .25em; color: #666666; font-size: .75em}
+.MathJax_MenuActive .MathJax_MenuArrow {color: white}
+.MathJax_MenuArrow.RTL {left: .5em; right: auto}
+.MathJax_MenuCheck {position: absolute; left: .7em}
+.MathJax_MenuCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuRadioCheck {position: absolute; left: .7em}
+.MathJax_MenuRadioCheck.RTL {right: .7em; left: auto}
+.MathJax_MenuLabel {padding: 1px 2em 3px 1.33em; font-style: italic}
+.MathJax_MenuRule {border-top: 1px solid #DDDDDD; margin: 4px 3px}
+.MathJax_MenuDisabled {color: GrayText}
+.MathJax_MenuActive {background-color: #606872; color: white}
+.MathJax_MenuDisabled:focus, .MathJax_MenuLabel:focus {background-color: #E8E8E8}
+.MathJax_ContextMenu:focus {outline: none}
+.MathJax_ContextMenu .MathJax_MenuItem:focus {outline: none}
+#MathJax_AboutClose {top: .2em; right: .2em}
+.MathJax_Menu .MathJax_MenuClose {top: -10px; left: -10px}
+.MathJax_MenuClose {position: absolute; cursor: pointer; display: inline-block; border: 2px solid #AAA; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; font-family: 'Courier New',Courier; font-size: 24px; color: #F0F0F0}
+.MathJax_MenuClose span {display: block; background-color: #AAA; border: 1.5px solid; border-radius: 18px; -webkit-border-radius: 18px; -moz-border-radius: 18px; -khtml-border-radius: 18px; line-height: 0; padding: 8px 0 6px}
+.MathJax_MenuClose:hover {color: white!important; border: 2px solid #CCC!important}
+.MathJax_MenuClose:hover span {background-color: #CCC!important}
+.MathJax_MenuClose:hover:focus {outline: none}
+</style><style type="text/css">.MathJax_Preview .MJXf-math {color: inherit!important}
+</style><style type="text/css">.MJX_Assistive_MathML {position: absolute!important; top: 0; left: 0; clip: rect(1px, 1px, 1px, 1px); padding: 1px 0 0 0!important; border: 0!important; height: 1px!important; width: 1px!important; overflow: hidden!important; display: block!important; -webkit-touch-callout: none; -webkit-user-select: none; -khtml-user-select: none; -moz-user-select: none; -ms-user-select: none; user-select: none}
+.MJX_Assistive_MathML.MJX_Assistive_MathML_Block {width: 100%!important}
+</style><style type="text/css">#MathJax_Zoom {position: absolute; background-color: #F0F0F0; overflow: auto; display: block; z-index: 301; padding: .5em; border: 1px solid black; margin: 0; font-weight: normal; font-style: normal; text-align: left; text-indent: 0; text-transform: none; line-height: normal; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; -webkit-box-sizing: content-box; -moz-box-sizing: content-box; box-sizing: content-box; box-shadow: 5px 5px 15px #AAAAAA; -webkit-box-shadow: 5px 5px 15px #AAAAAA; -moz-box-shadow: 5px 5px 15px #AAAAAA; -khtml-box-shadow: 5px 5px 15px #AAAAAA; filter: progid:DXImageTransform.Microsoft.dropshadow(OffX=2, OffY=2, Color='gray', Positive='true')}
+#MathJax_ZoomOverlay {position: absolute; left: 0; top: 0; z-index: 300; display: inline-block; width: 100%; height: 100%; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+#MathJax_ZoomFrame {position: relative; display: inline-block; height: 0; width: 0}
+#MathJax_ZoomEventTrap {position: absolute; left: 0; top: 0; z-index: 302; display: inline-block; border: 0; padding: 0; margin: 0; background-color: white; opacity: 0; filter: alpha(opacity=0)}
+</style><style type="text/css">.MathJax_Preview {color: #888}
+#MathJax_Message {position: fixed; left: 1px; bottom: 2px; background-color: #E6E6E6; border: 1px solid #959595; margin: 0px; padding: 2px 8px; z-index: 102; color: black; font-size: 80%; width: auto; white-space: nowrap}
+#MathJax_MSIE_Frame {position: absolute; top: 0; left: 0; width: 0px; z-index: 101; border: 0px; margin: 0px; padding: 0px}
+.MathJax_Error {color: #CC0000; font-style: italic}
+</style><style type="text/css">.MJXp-script {font-size: .8em}
+.MJXp-right {-webkit-transform-origin: right; -moz-transform-origin: right; -ms-transform-origin: right; -o-transform-origin: right; transform-origin: right}
+.MJXp-bold {font-weight: bold}
+.MJXp-italic {font-style: italic}
+.MJXp-scr {font-family: MathJax_Script,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-frak {font-family: MathJax_Fraktur,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-sf {font-family: MathJax_SansSerif,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-cal {font-family: MathJax_Caligraphic,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-mono {font-family: MathJax_Typewriter,'Times New Roman',Times,STIXGeneral,serif}
+.MJXp-largeop {font-size: 150%}
+.MJXp-largeop.MJXp-int {vertical-align: -.2em}
+.MJXp-math {display: inline-block; line-height: 1.2; text-indent: 0; font-family: 'Times New Roman',Times,STIXGeneral,serif; white-space: nowrap; border-collapse: collapse}
+.MJXp-display {display: block; text-align: center; margin: 1em 0}
+.MJXp-math span {display: inline-block}
+.MJXp-box {display: block!important; text-align: center}
+.MJXp-box:after {content: " "}
+.MJXp-rule {display: block!important; margin-top: .1em}
+.MJXp-char {display: block!important}
+.MJXp-mo {margin: 0 .15em}
+.MJXp-mfrac {margin: 0 .125em; vertical-align: .25em}
+.MJXp-denom {display: inline-table!important; width: 100%}
+.MJXp-denom > * {display: table-row!important}
+.MJXp-surd {vertical-align: top}
+.MJXp-surd > * {display: block!important}
+.MJXp-script-box > *  {display: table!important; height: 50%}
+.MJXp-script-box > * > * {display: table-cell!important; vertical-align: top}
+.MJXp-script-box > *:last-child > * {vertical-align: bottom}
+.MJXp-script-box > * > * > * {display: block!important}
+.MJXp-mphantom {visibility: hidden}
+.MJXp-munderover {display: inline-table!important}
+.MJXp-over {display: inline-block!important; text-align: center}
+.MJXp-over > * {display: block!important}
+.MJXp-munderover > * {display: table-row!important}
+.MJXp-mtable {vertical-align: .25em; margin: 0 .125em}
+.MJXp-mtable > * {display: inline-table!important; vertical-align: middle}
+.MJXp-mtr {display: table-row!important}
+.MJXp-mtd {display: table-cell!important; text-align: center; padding: .5em 0 0 .5em}
+.MJXp-mtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-mlabeledtr {display: table-row!important}
+.MJXp-mlabeledtr > .MJXp-mtd:first-child {padding-left: 0}
+.MJXp-mlabeledtr:first-child > .MJXp-mtd {padding-top: 0}
+.MJXp-merror {background-color: #FFFF88; color: #CC0000; border: 1px solid #CC0000; padding: 1px 3px; font-style: normal; font-size: 90%}
+.MJXp-scale0 {-webkit-transform: scaleX(.0); -moz-transform: scaleX(.0); -ms-transform: scaleX(.0); -o-transform: scaleX(.0); transform: scaleX(.0)}
+.MJXp-scale1 {-webkit-transform: scaleX(.1); -moz-transform: scaleX(.1); -ms-transform: scaleX(.1); -o-transform: scaleX(.1); transform: scaleX(.1)}
+.MJXp-scale2 {-webkit-transform: scaleX(.2); -moz-transform: scaleX(.2); -ms-transform: scaleX(.2); -o-transform: scaleX(.2); transform: scaleX(.2)}
+.MJXp-scale3 {-webkit-transform: scaleX(.3); -moz-transform: scaleX(.3); -ms-transform: scaleX(.3); -o-transform: scaleX(.3); transform: scaleX(.3)}
+.MJXp-scale4 {-webkit-transform: scaleX(.4); -moz-transform: scaleX(.4); -ms-transform: scaleX(.4); -o-transform: scaleX(.4); transform: scaleX(.4)}
+.MJXp-scale5 {-webkit-transform: scaleX(.5); -moz-transform: scaleX(.5); -ms-transform: scaleX(.5); -o-transform: scaleX(.5); transform: scaleX(.5)}
+.MJXp-scale6 {-webkit-transform: scaleX(.6); -moz-transform: scaleX(.6); -ms-transform: scaleX(.6); -o-transform: scaleX(.6); transform: scaleX(.6)}
+.MJXp-scale7 {-webkit-transform: scaleX(.7); -moz-transform: scaleX(.7); -ms-transform: scaleX(.7); -o-transform: scaleX(.7); transform: scaleX(.7)}
+.MJXp-scale8 {-webkit-transform: scaleX(.8); -moz-transform: scaleX(.8); -ms-transform: scaleX(.8); -o-transform: scaleX(.8); transform: scaleX(.8)}
+.MJXp-scale9 {-webkit-transform: scaleX(.9); -moz-transform: scaleX(.9); -ms-transform: scaleX(.9); -o-transform: scaleX(.9); transform: scaleX(.9)}
+.MathJax_PHTML .noError {vertical-align: ; font-size: 90%; text-align: left; color: black; padding: 1px 3px; border: 1px solid}
+</style><style type="text/css">div.MathJax_MathML {text-align: center; margin: .75em 0px; display: block!important}
+.MathJax_MathML {font-style: normal; font-weight: normal; line-height: normal; font-size: 100%; font-size-adjust: none; text-indent: 0; text-align: left; text-transform: none; letter-spacing: normal; word-spacing: normal; word-wrap: normal; white-space: nowrap; float: none; direction: ltr; max-width: none; max-height: none; min-width: 0; min-height: 0; border: 0; padding: 0; margin: 0}
+span.MathJax_MathML {display: inline!important}
+.MathJax_mmlExBox {display: block!important; overflow: hidden; height: 1px; width: 60ex; min-height: 0; max-height: none; padding: 0; border: 0; margin: 0}
+[class="MJX-tex-oldstyle"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB}
+[class="MJX-tex-oldstyle-bold"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB; font-weight: bold}
+[class="MJX-tex-caligraphic"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB}
+[class="MJX-tex-caligraphic-bold"] {font-family: MathJax_Caligraphic, MathJax_Caligraphic-WEB; font-weight: bold}
+@font-face /*1*/ {font-family: MathJax_Caligraphic-WEB; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Regular.otf')}
+@font-face /*2*/ {font-family: MathJax_Caligraphic-WEB; font-weight: bold; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/fonts/HTML-CSS/TeX/otf/MathJax_Caligraphic-Bold.otf')}
+[mathvariant="double-struck"] {font-family: MathJax_AMS, MathJax_AMS-WEB}
+[mathvariant="script"] {font-family: MathJax_Script, MathJax_Script-WEB}
+[mathvariant="fraktur"] {font-family: MathJax_Fraktur, MathJax_Fraktur-WEB}
+[mathvariant="bold-script"] {font-family: MathJax_Script, MathJax_Caligraphic-WEB; font-weight: bold}
+[mathvariant="bold-fraktur"] {font-family: MathJax_Fraktur, MathJax_Fraktur-WEB; font-weight: bold}
+[mathvariant="monospace"] {font-family: monospace}
+[mathvariant="sans-serif"] {font-family: sans-serif}
+[mathvariant="bold-sans-serif"] {font-family: sans-serif; font-weight: bold}
+[mathvariant="sans-serif-italic"] {font-family: sans-serif; font-style: italic}
+[mathvariant="sans-serif-bold-italic"] {font-family: sans-serif; font-style: italic; font-weight: bold}
+@font-face /*3*/ {font-family: MathJax_AMS-WEB; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/fonts/HTML-CSS/TeX/otf/MathJax_AMS-Regular.otf')}
+@font-face /*4*/ {font-family: MathJax_Script-WEB; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/fonts/HTML-CSS/TeX/otf/MathJax_Script-Regular.otf')}
+@font-face /*5*/ {font-family: MathJax_Fraktur-WEB; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Regular.otf')}
+@font-face /*6*/ {font-family: MathJax_Fraktur-WEB; font-weight: bold; src: url('https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.4/fonts/HTML-CSS/TeX/otf/MathJax_Fraktur-Bold.otf')}
+</style>
+    <script type="text/x-mathjax-config">MathJax.Hub.Register.StartupHook("NativeMML Jax Ready", function () {MathJax.OutputJax.NativeMML.Augment({preTranslate: function (state) {
+      var scripts = state.jax[this.id];
+      for (var i = 0; i < scripts.length; i++) {
+        var script = scripts[i]; if (!script.parentNode) continue;
+        // Remove any existing output
+        var prev = script.previousSibling;
+        if (prev && prev.className === "MathJax_MathML")
+          prev.parentNode.removeChild(prev);
+        // Add the MathJax span
+        var jax = script.MathJax.elementJax; if (!jax) continue;
+        var math = jax.root; jax.NativeMML = {};
+        var type = (math.Get("display") === "block" ? "div" : "span");
+        var span = MathJax.HTML.Element(type,{
+          className: "MathJax_MathML", id:jax.inputID+"-Frame"
+        },[["span",{
+          className:"MathJax_MathContainer", isMathJax: true, jaxID:this.id,
+        },[["span",{isMathJax:true}]]
+        ]]);
+        script.parentNode.insertBefore(span,script);
+      }
+    }});MathJax.OutputJax.NativeMML.ffTableWidthBug = false;MathJax.OutputJax.NativeMML.forceReflow = false;MathJax.OutputJax.NativeMML.widthBug = false;MathJax.OutputJax.NativeMML.spaceWidthBug = false;MathJax.OutputJax.NativeMML.mtdWidthBug = false;});MathJax.Hub.Register.StartupHook("End Extensions", function () {if (MathJax.Extension.mml2jax) {  for (var i=0,m=MathJax.Hub.preProcessors.hooks.length; i < m; i++) {    if (MathJax.Hub.preProcessors.hooks[i].hook ===        MathJax.Extension.mml2jax.PreProcess)      { MathJax.Hub.preProcessors.hooks.splice(i,1); i--; m--; }  }}});</script></head>
+
+</head>
+<body>
+  <header>
+    <a href="/blog">Back</a>
+  </header>
+
+  
+
+<br>
+<style>pre { line-height: 125%; }
+td.linenos .normal { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+span.linenos { color: inherit; background-color: transparent; padding-left: 5px; padding-right: 5px; }
+td.linenos .special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+span.linenos.special { color: #000000; background-color: #ffffc0; padding-left: 5px; padding-right: 5px; }
+.codehilite .hll { background-color: #49483e }
+.codehilite .c { color: #777777; font-style: italic } /* Comment */
+.codehilite .err { color: #a61717; background-color: #e3d2d2 } /* Error */
+.codehilite .esc { color: #cccccc } /* Escape */
+.codehilite .g { color: #cccccc } /* Generic */
+.codehilite .k { color: #7686bb; font-weight: bold } /* Keyword */
+.codehilite .l { color: #cccccc } /* Literal */
+.codehilite .n { color: #cccccc } /* Name */
+.codehilite .o { color: #cccccc } /* Operator */
+.codehilite .x { color: #cccccc } /* Other */
+.codehilite .p { color: #cccccc } /* Punctuation */
+.codehilite .ch { color: #777777; font-style: italic } /* Comment.Hashbang */
+.codehilite .cm { color: #777777; font-style: italic } /* Comment.Multiline */
+.codehilite .cp { color: #777777; font-style: italic } /* Comment.Preproc */
+.codehilite .cpf { color: #777777; font-style: italic } /* Comment.PreprocFile */
+.codehilite .c1 { color: #777777; font-style: italic } /* Comment.Single */
+.codehilite .cs { color: #777777; font-style: italic } /* Comment.Special */
+.codehilite .gd { color: #cccccc } /* Generic.Deleted */
+.codehilite .ge { color: #cccccc } /* Generic.Emph */
+.codehilite .gr { color: #cccccc } /* Generic.Error */
+.codehilite .gh { color: #cccccc } /* Generic.Heading */
+.codehilite .gi { color: #cccccc } /* Generic.Inserted */
+.codehilite .go { color: #cccccc } /* Generic.Output */
+.codehilite .gp { color: #ffffff } /* Generic.Prompt */
+.codehilite .gs { color: #cccccc } /* Generic.Strong */
+.codehilite .gu { color: #cccccc } /* Generic.Subheading */
+.codehilite .gt { color: #cccccc } /* Generic.Traceback */
+.codehilite .kc { color: #7686bb; font-weight: bold } /* Keyword.Constant */
+.codehilite .kd { color: #7686bb; font-weight: bold } /* Keyword.Declaration */
+.codehilite .kn { color: #7686bb; font-weight: bold } /* Keyword.Namespace */
+.codehilite .kp { color: #7686bb; font-weight: bold } /* Keyword.Pseudo */
+.codehilite .kr { color: #7686bb; font-weight: bold } /* Keyword.Reserved */
+.codehilite .kt { color: #7686bb; font-weight: bold } /* Keyword.Type */
+.codehilite .ld { color: #cccccc } /* Literal.Date */
+.codehilite .m { color: #4FB8CC } /* Literal.Number */
+.codehilite .s { color: #51cc99 } /* Literal.String */
+.codehilite .na { color: #cccccc } /* Name.Attribute */
+.codehilite .nb { color: #cccccc } /* Name.Builtin */
+.codehilite .nc { color: #cccccc } /* Name.Class */
+.codehilite .no { color: #cccccc } /* Name.Constant */
+.codehilite .nd { color: #cccccc } /* Name.Decorator */
+.codehilite .ni { color: #cccccc } /* Name.Entity */
+.codehilite .ne { color: #cccccc } /* Name.Exception */
+.codehilite .nf { color: #6a6aff } /* Name.Function */
+.codehilite .nl { color: #cccccc } /* Name.Label */
+.codehilite .nn { color: #cccccc } /* Name.Namespace */
+.codehilite .nx { color: #e2828e } /* Name.Other */
+.codehilite .py { color: #cccccc } /* Name.Property */
+.codehilite .nt { color: #cccccc } /* Name.Tag */
+.codehilite .nv { color: #7AB4DB; font-weight: bold } /* Name.Variable */
+.codehilite .ow { color: #cccccc } /* Operator.Word */
+.codehilite .w { color: #bbbbbb } /* Text.Whitespace */
+.codehilite .mb { color: #4FB8CC } /* Literal.Number.Bin */
+.codehilite .mf { color: #4FB8CC } /* Literal.Number.Float */
+.codehilite .mh { color: #4FB8CC } /* Literal.Number.Hex */
+.codehilite .mi { color: #4FB8CC } /* Literal.Number.Integer */
+.codehilite .mo { color: #4FB8CC } /* Literal.Number.Oct */
+.codehilite .sa { color: #51cc99 } /* Literal.String.Affix */
+.codehilite .sb { color: #51cc99 } /* Literal.String.Backtick */
+.codehilite .sc { color: #51cc99 } /* Literal.String.Char */
+.codehilite .dl { color: #51cc99 } /* Literal.String.Delimiter */
+.codehilite .sd { color: #51cc99 } /* Literal.String.Doc */
+.codehilite .s2 { color: #51cc99 } /* Literal.String.Double */
+.codehilite .se { color: #51cc99 } /* Literal.String.Escape */
+.codehilite .sh { color: #51cc99 } /* Literal.String.Heredoc */
+.codehilite .si { color: #51cc99 } /* Literal.String.Interpol */
+.codehilite .sx { color: #51cc99 } /* Literal.String.Other */
+.codehilite .sr { color: #51cc99 } /* Literal.String.Regex */
+.codehilite .s1 { color: #51cc99 } /* Literal.String.Single */
+.codehilite .ss { color: #51cc99 } /* Literal.String.Symbol */
+.codehilite .bp { color: #cccccc } /* Name.Builtin.Pseudo */
+.codehilite .fm { color: #6a6aff } /* Name.Function.Magic */
+.codehilite .vc { color: #7AB4DB; font-weight: bold } /* Name.Variable.Class */
+.codehilite .vg { color: #BE646C; font-weight: bold } /* Name.Variable.Global */
+.codehilite .vi { color: #7AB4DB; font-weight: bold } /* Name.Variable.Instance */
+.codehilite .vm { color: #7AB4DB; font-weight: bold } /* Name.Variable.Magic */
+.codehilite .il { color: #4FB8CC } /* Literal.Number.Integer.Long */</style><h2><strong>Weak RSA</strong></h2>
+<p>First crypto challenges, it was a pem file which can be opened with a python module or online pem parsers, We used the latter first just for a quick look, We noticed how big the e value is and we can safely conclude that: 
+<script type="math/tex; mode=display">
+d<\frac{N^{\frac14}}{3}
+</script>
+We can use the Wiener’s attack to calculate the private exponent.</p>
+<p>There is a python implementation of this attack that is already written, so just if you haven’t, paste this on a package manager:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">pip3</span> <span class="n">install</span> <span class="n">owiener</span>
+</code></pre></div>
+
+<p>Then you can write a python script to find d and open the flag file in python and rest is textbook RSA, here’s the code:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">Crypto.PublicKey</span> <span class="kn">import</span> <span class="n">RSA</span>
+<span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">bytes_to_long</span><span class="p">,</span> <span class="n">long_to_bytes</span><span class="p">,</span> <span class="n">inverse</span>
+<span class="kn">import</span> <span class="nn">owiener</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">RSA</span><span class="o">.</span><span class="n">importKey</span><span class="p">(</span><span class="nb">open</span><span class="p">(</span><span class="s1">&#39;pubkey.pem&#39;</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">())</span>
+<span class="n">N</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">n</span>
+<span class="n">e</span><span class="o">=</span><span class="n">key</span><span class="o">.</span><span class="n">e</span>
+<span class="n">d</span> <span class="o">=</span> <span class="n">owiener</span><span class="o">.</span><span class="n">attack</span><span class="p">(</span><span class="n">e</span><span class="p">,</span> <span class="n">N</span><span class="p">)</span>
+<span class="n">c</span><span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s2">&quot;flag.enc&quot;</span><span class="p">,</span><span class="s2">&quot;rb&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span> 
+<span class="n">c</span> <span class="o">=</span> <span class="n">bytes_to_long</span><span class="p">(</span><span class="n">c</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="n">key</span><span class="o">.</span><span class="n">n</span><span class="p">)))</span>
+</code></pre></div>
+
+<p>Flag:</p>
+<h2><strong>Signal From outer Space</strong></h2>
+<p>Downloading the files, we see there is a pdf, encrypted flag and source code. </p>
+<p>We noticed the pdf had an equation of sorts, it is in the form of an Elliptical curve equation. </p>
+<p>We are given a, b, and the modular prime p. Also, there are two point which are given, one of them has the heading <strong>Point of reference</strong> which we can assume to be the generator point.</p>
+<p>We can plug in those in the empty variables that is supposed to be filled in the code for now:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="mi">19930885203825540108513916323464619607890520613882110268999315402502483992713624056070847778485065788387695567162120805830837964237496163664777233360835853</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">16964108867870875431022511847406074513505438269132199629926447105117327702973321429130078673611996313382775579316996202239740533714013559789369433905598853</span> 
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2557269903904682970099236538031735218462780844817175317697385659377007186785050969676938059088155922328011075081606354569621958862612850816694647002380820</span>
+<span class="n">g_x</span> <span class="o">=</span> <span class="mi">11612316038801479962400723698427883310130163176291338759911281034170556609743457773032375965620429931675410389220512342834663089126659445523701533922313238</span>
+<span class="n">g_y</span> <span class="o">=</span> <span class="mi">14492470559976609909614920150302533890662281539874542639808213982956316710837667114681496336361906718748053884513468343236055545337522055713141076615967243</span>
+</code></pre></div>
+
+<p>Next, we figure out what the error point is supposed to mean, we notice the way the file using elliptical curve to find a multiple of a Generator then using that point to generate shared secret as key for encryption.</p>
+<p>There is also the info that is given in the question which says that the error point is a multiple of the generator. </p>
+<p>We looked at the code again and noticed that the shared secret is generated by doing the point multiplication again.</p>
+<p>We can assume the error point is value that was multiplied once, i.e. the variable <strong>public</strong> in which multiplication was done once. We can write this down as maths values to make it clearer.
+<script type="math/tex; mode=display">
+\begin{aligned}
+Public = n\ *\ G \newline Key = n\ *\ Public
+\end{aligned}
+</script>
+Where the Key only uses, the x point for the encryption</p>
+<p>Now the next question is how do we find n? Elliptical curves are very hard to solve, so calculation of n should be almost impossible… unless the curve is anomalous. </p>
+<p>We went through the list of all the attacks that was possible for a simple anomalous curve. All the values are too big for Pohlig-Hellman Attack (which uses discrete logarithm). But there was one thing we noticed and that was the order of curve is the same as that of modular prime p. We checked this in sage by writing it in the form of elliptical curve equation:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="mi">19930885203825540108513916323464619607890520613882110268999315402502483992713624056070847778485065788387695567162120805830837964237496163664777233360835853</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">16964108867870875431022511847406074513505438269132199629926447105117327702973321429130078673611996313382775579316996202239740533714013559789369433905598853</span> 
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2557269903904682970099236538031735218462780844817175317697385659377007186785050969676938059088155922328011075081606354569621958862612850816694647002380820</span>
+<span class="n">g_x</span> <span class="o">=</span> <span class="mi">11612316038801479962400723698427883310130163176291338759911281034170556609743457773032375965620429931675410389220512342834663089126659445523701533922313238</span>
+<span class="n">g_y</span> <span class="o">=</span> <span class="mi">14492470559976609909614920150302533890662281539874542639808213982956316710837667114681496336361906718748053884513468343236055545337522055713141076615967243</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">EllipticCurve</span><span class="p">(</span><span class="n">GF</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">])</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">E</span><span class="p">(</span><span class="n">g_x</span><span class="p">,</span><span class="n">g_y</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">order</span><span class="p">(</span><span class="n">E</span><span class="p">)</span><span class="o">==</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Which returns <strong>True</strong></p>
+<p>This makes it prone to something called a smart attack and can be solved very easily with some algorithms. I don’t want to touch on the maths behind a smart attack as it is long winded, the jist of it the is we move the discrete logarithm problem from Elliptic curve to an integer mod p,but I shall link my point of reference which I used to implement the algorithm.</p>
+<p>https://wstein.org/edu/2010/414/projects/novotney.pdf</p>
+<p>So, we can essentially calculate n this way, here’s my code for algorithm which was implemented in sage:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="mi">19930885203825540108513916323464619607890520613882110268999315402502483992713624056070847778485065788387695567162120805830837964237496163664777233360835853</span>
+<span class="n">A</span> <span class="o">=</span> <span class="mi">16964108867870875431022511847406074513505438269132199629926447105117327702973321429130078673611996313382775579316996202239740533714013559789369433905598853</span> 
+<span class="n">B</span> <span class="o">=</span> <span class="mi">2557269903904682970099236538031735218462780844817175317697385659377007186785050969676938059088155922328011075081606354569621958862612850816694647002380820</span>
+<span class="n">xP</span> <span class="o">=</span> <span class="mi">11612316038801479962400723698427883310130163176291338759911281034170556609743457773032375965620429931675410389220512342834663089126659445523701533922313238</span>
+<span class="n">yP</span> <span class="o">=</span> <span class="mi">14492470559976609909614920150302533890662281539874542639808213982956316710837667114681496336361906718748053884513468343236055545337522055713141076615967243</span>
+<span class="n">xQ</span> <span class="o">=</span> <span class="mi">2609506039090139098835068603396546214836589143940493046</span>
+<span class="n">yQ</span> <span class="o">=</span> <span class="mi">8637771092812212464887027788957801177574860926032421582</span>
+<span class="n">xQ</span> <span class="o">=</span><span class="mi">716447455218443211337138354910360820310039222467099750548875601978669948877653369670984450493776038314939273990792875030477209738905138162016103972822887</span>
+<span class="n">yQ</span><span class="o">=</span> <span class="mi">2577636835404844606086593513656242872409629115084680797009677298030035019056074660428408865132307063442440986937998752115629728860272800311376841076830297</span>
+<span class="n">E</span> <span class="o">=</span> <span class="n">EllipticCurve</span><span class="p">(</span><span class="n">GF</span><span class="p">(</span><span class="n">p</span><span class="p">),</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">])</span>
+<span class="n">Qp</span> <span class="o">=</span> <span class="n">Qp</span><span class="p">(</span><span class="n">p</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<span class="n">Ep</span> <span class="o">=</span> <span class="n">EllipticCurve</span><span class="p">(</span><span class="n">Qp</span><span class="p">,</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">B</span><span class="p">])</span>
+<span class="n">yPp</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">Qp</span><span class="p">(</span><span class="n">xP</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">Qp</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">*</span> <span class="n">Qp</span><span class="p">(</span><span class="n">xP</span><span class="p">)</span> <span class="o">+</span> <span class="n">Qp</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
+<span class="n">Pp</span> <span class="o">=</span> <span class="n">Ep</span><span class="p">(</span><span class="n">Qp</span><span class="p">(</span><span class="n">xP</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">yPp</span><span class="p">,</span> <span class="n">yPp</span><span class="p">)[</span><span class="n">yPp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">yP</span><span class="p">])</span>
+<span class="n">yQp</span> <span class="o">=</span> <span class="n">sqrt</span><span class="p">(</span><span class="n">Qp</span><span class="p">(</span><span class="n">xQ</span><span class="p">)</span> <span class="o">**</span> <span class="mi">3</span> <span class="o">+</span> <span class="n">Qp</span><span class="p">(</span><span class="n">A</span><span class="p">)</span> <span class="o">*</span> <span class="n">Qp</span><span class="p">(</span><span class="n">xQ</span><span class="p">)</span> <span class="o">+</span> <span class="n">Qp</span><span class="p">(</span><span class="n">B</span><span class="p">))</span>
+<span class="n">Qp</span> <span class="o">=</span> <span class="n">Ep</span><span class="p">(</span><span class="n">Qp</span><span class="p">(</span><span class="n">xQ</span><span class="p">),</span> <span class="p">(</span><span class="o">-</span><span class="n">yQp</span><span class="p">,</span> <span class="n">yQp</span><span class="p">)[</span><span class="n">yQp</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="n">yQ</span><span class="p">])</span>
+<span class="n">lQ</span> <span class="o">=</span> <span class="n">Ep</span><span class="o">.</span><span class="n">formal_group</span><span class="p">()</span><span class="o">.</span><span class="n">log</span><span class="p">()(</span><span class="o">-</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">Qp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">Qp</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">p</span>
+<span class="n">lP</span> <span class="o">=</span> <span class="n">Ep</span><span class="o">.</span><span class="n">formal_group</span><span class="p">()</span><span class="o">.</span><span class="n">log</span><span class="p">()(</span><span class="o">-</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">Pp</span><span class="p">)[</span><span class="mi">0</span><span class="p">]</span> <span class="o">//</span> <span class="p">(</span><span class="n">p</span> <span class="o">*</span> <span class="n">Pp</span><span class="p">)[</span><span class="mi">1</span><span class="p">])</span> <span class="o">/</span> <span class="n">p</span>
+<span class="n">e</span> <span class="o">=</span> <span class="n">lQ</span> <span class="o">/</span> <span class="n">lP</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\n</span><span class="s1">--&gt; n: </span><span class="si">{:d}</span><span class="se">\n</span><span class="s1">&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">e</span><span class="p">[</span><span class="mi">0</span><span class="p">]))</span>
+</code></pre></div>
+
+<p>Where, <strong>P</strong> here is the <strong>Generator G</strong> , <strong>Q</strong> here is the <strong>Error point</strong></p>
+<p>As we have n, we can use n once more to calculate shared secret and use it as a key to decrypt the flag, one thing we noticed was the flag was in mp3 format before it was encrypted so we decrypt to an mp3 file.</p>
+<p>Finally, the last part decryption which was done in python where we change up the encrypt script just a bit:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">Crypto.Cipher</span> <span class="kn">import</span> <span class="n">AES</span>
+<span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">inverse</span><span class="p">,</span><span class="n">bytes_to_long</span>
+<span class="kn">from</span> <span class="nn">Crypto.Util.Padding</span> <span class="kn">import</span> <span class="n">pad</span><span class="p">,</span> <span class="n">unpad</span>
+<span class="kn">from</span> <span class="nn">collections</span> <span class="kn">import</span> <span class="n">namedtuple</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="kn">import</span> <span class="nn">hashlib</span>
+<span class="kn">import</span> <span class="nn">os</span>
+
+<span class="c1"># Create a simple Point class to represent the affine points.</span>
+<span class="n">Point</span> <span class="o">=</span> <span class="n">namedtuple</span><span class="p">(</span><span class="s2">&quot;Point&quot;</span><span class="p">,</span> <span class="s2">&quot;x y&quot;</span><span class="p">)</span>
+
+<span class="c1"># The point at infinity (origin for the group law).</span>
+<span class="n">O</span> <span class="o">=</span> <span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">decrypt</span><span class="p">(</span><span class="n">secret</span><span class="p">):</span>
+    <span class="n">sha1</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha1</span><span class="p">()</span>
+    <span class="n">sha1</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="nb">str</span><span class="p">(</span><span class="n">secret</span><span class="p">)</span><span class="o">.</span><span class="n">encode</span><span class="p">(</span><span class="s1">&#39;ascii&#39;</span><span class="p">))</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">sha1</span><span class="o">.</span><span class="n">digest</span><span class="p">()[:</span><span class="mi">16</span><span class="p">]</span>
+    <span class="n">dt</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;flag.enc&#39;</span><span class="p">,</span><span class="s1">&#39;rb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">cipher</span> <span class="o">=</span> <span class="n">AES</span><span class="o">.</span><span class="n">new</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">AES</span><span class="o">.</span><span class="n">MODE_ECB</span><span class="p">)</span>
+    <span class="n">ciphertext</span> <span class="o">=</span> <span class="n">cipher</span><span class="o">.</span><span class="n">decrypt</span><span class="p">(</span><span class="n">pad</span><span class="p">(</span><span class="n">dt</span><span class="p">,</span> <span class="mi">16</span><span class="p">))</span>
+    <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;flag1.mp3&#39;</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">ciphertext</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ciphertext</span>
+
+
+<span class="k">def</span> <span class="nf">check_point</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">P</span> <span class="o">==</span> <span class="n">O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="kc">True</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">y</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">x</span><span class="o">**</span><span class="mi">3</span> <span class="o">+</span> <span class="n">a</span><span class="o">*</span><span class="n">P</span><span class="o">.</span><span class="n">x</span> <span class="o">+</span> <span class="n">b</span><span class="p">))</span> <span class="o">%</span> <span class="n">p</span> <span class="o">==</span> <span class="mi">0</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">P</span><span class="o">.</span><span class="n">x</span> <span class="o">&lt;</span> <span class="n">p</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;=</span> <span class="n">P</span><span class="o">.</span><span class="n">y</span> <span class="o">&lt;</span> <span class="n">p</span>
+
+<span class="k">def</span> <span class="nf">point_inverse</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">P</span> <span class="o">==</span> <span class="n">O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">P</span>
+    <span class="k">return</span> <span class="n">Point</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">x</span><span class="p">,</span> <span class="o">-</span><span class="n">P</span><span class="o">.</span><span class="n">y</span> <span class="o">%</span> <span class="n">p</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">point_addition</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">Q</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">P</span> <span class="o">==</span> <span class="n">O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">Q</span>
+    <span class="k">elif</span> <span class="n">Q</span> <span class="o">==</span> <span class="n">O</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">P</span>
+    <span class="k">elif</span> <span class="n">Q</span> <span class="o">==</span> <span class="n">point_inverse</span><span class="p">(</span><span class="n">P</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">O</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">P</span> <span class="o">==</span> <span class="n">Q</span><span class="p">:</span>
+            <span class="n">lam</span> <span class="o">=</span> <span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">P</span><span class="o">.</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">+</span> <span class="n">a</span><span class="p">)</span><span class="o">*</span><span class="n">inverse</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">P</span><span class="o">.</span><span class="n">y</span><span class="p">,</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">lam</span> <span class="o">%=</span> <span class="n">p</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">lam</span> <span class="o">=</span> <span class="p">(</span><span class="n">Q</span><span class="o">.</span><span class="n">y</span> <span class="o">-</span> <span class="n">P</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="n">inverse</span><span class="p">((</span><span class="n">Q</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">P</span><span class="o">.</span><span class="n">x</span><span class="p">),</span> <span class="n">p</span><span class="p">)</span>
+            <span class="n">lam</span> <span class="o">%=</span> <span class="n">p</span>
+    <span class="n">Rx</span> <span class="o">=</span> <span class="p">(</span><span class="n">lam</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="n">P</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">Q</span><span class="o">.</span><span class="n">x</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span>
+    <span class="n">Ry</span> <span class="o">=</span> <span class="p">(</span><span class="n">lam</span><span class="o">*</span><span class="p">(</span><span class="n">P</span><span class="o">.</span><span class="n">x</span> <span class="o">-</span> <span class="n">Rx</span><span class="p">)</span> <span class="o">-</span> <span class="n">P</span><span class="o">.</span><span class="n">y</span><span class="p">)</span> <span class="o">%</span> <span class="n">p</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">Rx</span><span class="p">,</span> <span class="n">Ry</span><span class="p">)</span>
+    <span class="k">assert</span> <span class="n">check_point</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">R</span>
+
+
+<span class="k">def</span> <span class="nf">double_and_add</span><span class="p">(</span><span class="n">P</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="n">Q</span> <span class="o">=</span> <span class="n">P</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">O</span>
+    <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">n</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+            <span class="n">R</span> <span class="o">=</span> <span class="n">point_addition</span><span class="p">(</span><span class="n">R</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+        <span class="n">Q</span> <span class="o">=</span> <span class="n">point_addition</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">Q</span><span class="p">)</span>
+        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">//</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">check_point</span><span class="p">(</span><span class="n">R</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">R</span>
+
+
+<span class="k">def</span> <span class="nf">gen_shared_secret</span><span class="p">(</span><span class="n">Q</span><span class="p">:</span> <span class="nb">tuple</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+    <span class="n">S</span> <span class="o">=</span> <span class="n">double_and_add</span><span class="p">(</span><span class="n">Q</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">S</span><span class="o">.</span><span class="n">x</span>
+
+
+<span class="n">p</span> <span class="o">=</span> <span class="mi">19930885203825540108513916323464619607890520613882110268999315402502483992713624056070847778485065788387695567162120805830837964237496163664777233360835853</span>
+<span class="n">a</span> <span class="o">=</span> <span class="mi">16964108867870875431022511847406074513505438269132199629926447105117327702973321429130078673611996313382775579316996202239740533714013559789369433905598853</span> 
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2557269903904682970099236538031735218462780844817175317697385659377007186785050969676938059088155922328011075081606354569621958862612850816694647002380820</span>
+<span class="n">g_x</span> <span class="o">=</span> <span class="mi">11612316038801479962400723698427883310130163176291338759911281034170556609743457773032375965620429931675410389220512342834663089126659445523701533922313238</span>
+<span class="n">g_y</span> <span class="o">=</span> <span class="mi">14492470559976609909614920150302533890662281539874542639808213982956316710837667114681496336361906718748053884513468343236055545337522055713141076615967243</span>
+<span class="n">G</span> <span class="o">=</span> <span class="n">Point</span><span class="p">(</span><span class="n">g_x</span><span class="p">,</span> <span class="n">g_y</span><span class="p">)</span>
+<span class="n">n</span> <span class="o">=</span> <span class="mi">11568228948033756316880439309350939673466728751800247616290793327983726097204440941777542891811676682980936787973145438110219254450479902147897654728360094</span>
+<span class="n">P</span> <span class="o">=</span> <span class="n">double_and_add</span><span class="p">(</span><span class="n">G</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">key</span> <span class="o">=</span> <span class="n">gen_shared_secret</span><span class="p">(</span><span class="n">P</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="n">decrypt</span><span class="p">(</span><span class="n">key</span><span class="p">)</span>
+</code></pre></div>
+
+<p>This gives us a mp3 file which is a monotonous narration of the flag :V: </p>
+<p>Flag: </p>
+<blockquote>
+<p><strong>HTB{37_c0m3_h0m3_d1nn3r_15_r34dy}</strong></p>
+</blockquote>
+<h2><strong>Nuclear Disaster</strong></h2>
+<p>4th Crypto Challenge, to get the files for this one you have to ssh into the server, !</p>
+<p>there you file with parameters but there is no scripts to know what the implementation of these strange numbers are:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">n</span><span class="p">:</span> <span class="mh">0x690ee43793bc1f34b9e44f7aeb91063d92292be0884816718ed836efeec60744d68f73c0dcebe42837a7d316dd0ab8589b461d034b0e6468e734b2b741c2ce7d50ca0e619114d758ff1973e57f843f22b0cb14af7694763a774f306c4f106616f173e2b4bdb49ef1cc2553c9dd3dc1877f7f87f106d01052faae22acfd6f3fbbfdb41be6192a0e49810a7c0874d634bcd07627e2a64f596e4356212f38628bb5416a6008e2ef0763a0da97475d7d5a1ee15842a4db54987b776f36120bf851b70c7edd197857297193c39c69d3cefe330029e57baae71f57a8fa3ffe3392855d7eca3861aa60eaabf93244b6659c9838680829eeba788dba871eedaf1f48e6ed00c1d5c12ace91edfab730d88180f2cab20beca486f73bb39ff73120a7d80c1a4bdfea3507009737977262a534a6513f4fb2db9a626f33d50a16f11098ada1d8f73043e616c298ce5bcc657120b83daa7e35263d0ff9dae602df9e00b1da0b0beacb00ee680ca890f8949f9ebd723c81eb789309a007301e6a621d431d367577</span>
+<span class="n">e</span><span class="p">:</span> <span class="mh">0x257ae0a7b65e25b4e6de59c94259c86238666858419de8565c6bfc5ce2c7964bf013918b888341361ab61143a3848e34c8609b8eed9f44bbad6ec5c2e9c5d1fdcf79038a1fcb87aad9cae2cd885e2f42758b3ccc1efd37ebddc4462f86af68c199ae6015600077ddf6b8e2dfa5ce5b9701aebbd2d1385171c300a2823d72511f5663692b0c33c7d5ccdc9acd255a0ef7d644d94670a7af40a6829494e8a8371657b8b96618b4323030713b32c29b159ebddd7a0af42c64c63b5d92a8b8ff493b0418828206fbb5663d35d7d42d03e54b37e08f858296234d85d1eb72ad6fdff7115799c4901635cfd2ac83dda30b69fd9fbb9d1bddf38fd9c62e01776ab3c155d0e3fecefb7b9801e0cbc477b10dcd25f872c0f3172cdf05f27a17ea6d418f77bec591e1828b3830d35a3217cf59c7c384eee460579fff5d61f368bf453b142952456db7934d0063c0f46d9b5a8b35a7e7a4b211c532b7ce7ca5c09e45e241f87eaf63e0ecd35ece6275509c999415138daa6530297564e32b298ddaf62d87bf</span>
+<span class="n">a</span><span class="p">:</span> <span class="mh">0xd05e30b62b9c8a473b7513ac2c8b372d58092733a463458f749b2db4544a868344f79312dd03c366f6855f12db68881d3c57ba857c8c4927a93e8e59569ba1c8eada720adcc818b8fb92c3e0b23ab26704d7859c16ef09c9d2692f0132295fa8a67e7936d1a7d53872c3a51e7115cb952c3ccbbfeb8d29c2f5b58ecdb799b423ebeca3725ff317682750610e5986b9c0fb385feacdbfda4082b8e820a7651e9569642d598c50050176019ade5ef446b5165b8280cf0c3f33efed0d13298aa6ab628669493d12bbbb6e80bc220b303874f0b4acd8a61319215fb44decae0c2f116e0710d3b022baeb6ee294206310e42dd51c1de91de872f1adf5c395a674cf05</span>
+<span class="n">g</span><span class="p">:</span> <span class="mh">0x23e774b678534aca7671d71a4f87dca2274e161b1f8561ab2ad51d12333d901f054759281a8bc1f9686184b5487e8353813dc0938e1570aed83f34857744fbc5ea856687dcac06c53e3f9fc7e973cc94efb17ba85ecc00109e289b157172a0cad89ef4b6d795271e4e42aca26f0a0ee3cd71e2f561657fca7ddcb0fb45bb4d0491dca103cb5a4bfbbbf086bb58f73ae4f0fbd5fd8b2baf3606aca6937f0cd4a764be6ab44a014c6be5d2614a9de6c6548ce86588b7a3cff8e326429c9c2dcdd8595d9c5703f91c07b835721d5b59d9ba26e3f4d34f7e38a2d39602259cb024da307715f61a0c07ea4ce47eb19356109e4335820faa5b6e1f68fdcd4780c92a1c</span>
+<span class="n">c1</span><span class="p">:</span> <span class="mh">0x48eeea8b6d8ee7b7264115858c883005b93a515db96c33329f22153b5646d771aee09fd5e34338640ddd3bb933e1eda111625f527725d3e3b8a7990560a4a50271fce090fcd1f525a9ddb5ceac20646afa5d383a84eab00c88fb6041899ebc1a6ce0b10a2fe00a7b6f7c0a23d6bb4c02237a4eaf7a8b8a748e1273a873d8b0b48526a6b96675163bd20d452050d530bd2cad6849a7087663a3aa3d11a2063716e4bd0279f1c369538d491b891301126310abb5b3b2ed1c2d4547fecd0feba29fa1a14b641e2cb5669cc6225a0f9c573ef3dd2a4b8f820afe63a639538d4dc52c1b76380ed3f6e9507c40f1a68412585acea0e5a8b5f00bfb15187ed84a65db1dba5e2c2a8234cc3acb15b354c3072e5f9e330f12aa6a323e4f98185050a161621fcaa6a0067697420c5a9509ed35724a623e36963fa80a5831d6925b2a89be18935147cfc2d390cbe39f3e44a4951f3a6c078c10d2c241c6e9a1e84188b36abee3c045d61325ba73b12c54844a2debf93d2d5374679f9aaa668278893e0ef65c</span>
+<span class="n">c2</span><span class="p">:</span> <span class="mh">0xb9aa388ec95aa402d590ffd57ccb8cc1c741060cf4a33147ff5b030b8ab160d7475befb59a5221ab48a4567977f40ce5a60ec32ed35d21f05f3d9a3c4f0cc129f8bb71193cd14752e9b446132fca31402fc38d32b41b5cd98b8d56b03e360ab778158f2b529b95adcef7014fb7914958f73eb866232d58c06034c9050e94dd47bca4b43b7d3c9990171b68fced26ec22779a229cbd5d89b46110bfb17efcd68a6f786502a3e3e94dfac11b30108109ed331d2b3d69a70716d48420f0c1b43e954a09d1bf8a47f73360db789df6fdfc5ae360fc6d2d5952e41f1ce4def3ce2454007711c7c0fd4359c30fea7357e6ec1c5e61a42e908c0d01cb145795b44bf505</span>
+<span class="n">DROP</span> <span class="n">US</span> <span class="n">some</span> <span class="n">ETH</span> <span class="ow">and</span> <span class="n">you</span> <span class="n">may</span> <span class="n">prevent</span> <span class="n">a</span> <span class="n">nuclear</span> <span class="n">disaster</span><span class="p">:</span>
+<span class="mh">0x7b1cA37A0ad47B14e55a1E0d9d882999c0DF1Ee0</span>
+</code></pre></div>
+
+<p>We can't proceed forward with these numbers alone, We can't access root as we don't have the password, there was an hidden folder in the directory that we can access by:</p>
+<div class="codehilite"><pre><span></span><code><span class="nb">cd</span> .secrets/
+</code></pre></div>
+
+<p>There we get a script which contained the files for the source code.</p>
+<p>The source code was a very strange implementation of RSA combined with some generator-mod a prime. </p>
+<p>The message was implemented through a random value K which you get from g,k and n. We write out what each of these values do for a better understanding of the how they all come into play.
+<script type="math/tex; mode=display">
+\begin{aligned}
+k = rand(2,a)
+\newline K \equiv g^k \mod a
+\newline c_1 \equiv k^e \mod n
+\newline c_2 \equiv m*K \mod a
+\end{aligned}
+</script>
+Now as you can see the only way to calculate <strong>K</strong> is to determine <strong>k</strong>, and the only way to get <strong>k</strong> is by using c1. We could try other methods of finding <strong>K</strong> like brute force the set if <strong>g</strong> is a small cyclic group, but as we see one of the lines prevent generation of such small groups. </p>
+<p>As we know from number theory,
+<script type="math/tex; mode=display">
+\begin{aligned}
+d \equiv e^{-1} \mod \phi
+\newline So, we\ can\ write,
+\newline k \equiv c_1^{d} \mod n
+\end{aligned}
+</script>
+Now, all we need to do is to find <strong>d</strong>, we can see in the code that it is generated in a strange way... and also that the e is still huge but not huge in the form of the wiener attack but something along those lines.</p>
+<p>We quickly googled and found other big public exponent attack, notably the <strong>Variant of the wiener attack</strong>, which we found, we used this implementation to calculate <strong>d</strong> in sage:</p>
+<p>This returns <strong>d</strong>,</p>
+<div class="codehilite"><pre><span></span><code><span class="n">d</span> <span class="o">=</span> <span class="mi">98099084361187641892367838720535907642384507854400227061381270492608084322671</span>
+</code></pre></div>
+
+<p>As we have <strong>d</strong> we can calculate <strong>k</strong> with <strong>c1</strong> equation as noted before and calculate <strong>K</strong>, then all we have to do to calculate the message:
+<script type="math/tex; mode=display">
+m \equiv c2*K^{-1} \mod n
+</script>
+and we get the message, here's the python script for the rest:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span>
+<span class="n">n</span><span class="o">=</span> <span class="mh">0x690ee43793bc1f34b9e44f7aeb91063d92292be0884816718ed836efeec60744d68f73c0dcebe42837a7d316dd0ab8589b461d034b0e6468e734b2b741c2ce7d50ca0e619114d758ff1973e57f843f22b0cb14af7694763a774f306c4f106616f173e2b4bdb49ef1cc2553c9dd3dc1877f7f87f106d01052faae22acfd6f3fbbfdb41be6192a0e49810a7c0874d634bcd07627e2a64f596e4356212f38628bb5416a6008e2ef0763a0da97475d7d5a1ee15842a4db54987b776f36120bf851b70c7edd197857297193c39c69d3cefe330029e57baae71f57a8fa3ffe3392855d7eca3861aa60eaabf93244b6659c9838680829eeba788dba871eedaf1f48e6ed00c1d5c12ace91edfab730d88180f2cab20beca486f73bb39ff73120a7d80c1a4bdfea3507009737977262a534a6513f4fb2db9a626f33d50a16f11098ada1d8f73043e616c298ce5bcc657120b83daa7e35263d0ff9dae602df9e00b1da0b0beacb00ee680ca890f8949f9ebd723c81eb789309a007301e6a621d431d367577</span>
+<span class="n">e</span><span class="o">=</span> <span class="mh">0x257ae0a7b65e25b4e6de59c94259c86238666858419de8565c6bfc5ce2c7964bf013918b888341361ab61143a3848e34c8609b8eed9f44bbad6ec5c2e9c5d1fdcf79038a1fcb87aad9cae2cd885e2f42758b3ccc1efd37ebddc4462f86af68c199ae6015600077ddf6b8e2dfa5ce5b9701aebbd2d1385171c300a2823d72511f5663692b0c33c7d5ccdc9acd255a0ef7d644d94670a7af40a6829494e8a8371657b8b96618b4323030713b32c29b159ebddd7a0af42c64c63b5d92a8b8ff493b0418828206fbb5663d35d7d42d03e54b37e08f858296234d85d1eb72ad6fdff7115799c4901635cfd2ac83dda30b69fd9fbb9d1bddf38fd9c62e01776ab3c155d0e3fecefb7b9801e0cbc477b10dcd25f872c0f3172cdf05f27a17ea6d418f77bec591e1828b3830d35a3217cf59c7c384eee460579fff5d61f368bf453b142952456db7934d0063c0f46d9b5a8b35a7e7a4b211c532b7ce7ca5c09e45e241f87eaf63e0ecd35ece6275509c999415138daa6530297564e32b298ddaf62d87bf</span>
+<span class="n">a</span><span class="o">=</span> <span class="mh">0xd05e30b62b9c8a473b7513ac2c8b372d58092733a463458f749b2db4544a868344f79312dd03c366f6855f12db68881d3c57ba857c8c4927a93e8e59569ba1c8eada720adcc818b8fb92c3e0b23ab26704d7859c16ef09c9d2692f0132295fa8a67e7936d1a7d53872c3a51e7115cb952c3ccbbfeb8d29c2f5b58ecdb799b423ebeca3725ff317682750610e5986b9c0fb385feacdbfda4082b8e820a7651e9569642d598c50050176019ade5ef446b5165b8280cf0c3f33efed0d13298aa6ab628669493d12bbbb6e80bc220b303874f0b4acd8a61319215fb44decae0c2f116e0710d3b022baeb6ee294206310e42dd51c1de91de872f1adf5c395a674cf05</span>
+<span class="n">g</span><span class="o">=</span> <span class="mh">0x23e774b678534aca7671d71a4f87dca2274e161b1f8561ab2ad51d12333d901f054759281a8bc1f9686184b5487e8353813dc0938e1570aed83f34857744fbc5ea856687dcac06c53e3f9fc7e973cc94efb17ba85ecc00109e289b157172a0cad89ef4b6d795271e4e42aca26f0a0ee3cd71e2f561657fca7ddcb0fb45bb4d0491dca103cb5a4bfbbbf086bb58f73ae4f0fbd5fd8b2baf3606aca6937f0cd4a764be6ab44a014c6be5d2614a9de6c6548ce86588b7a3cff8e326429c9c2dcdd8595d9c5703f91c07b835721d5b59d9ba26e3f4d34f7e38a2d39602259cb024da307715f61a0c07ea4ce47eb19356109e4335820faa5b6e1f68fdcd4780c92a1c</span>
+<span class="n">c1</span><span class="o">=</span> <span class="mh">0x48eeea8b6d8ee7b7264115858c883005b93a515db96c33329f22153b5646d771aee09fd5e34338640ddd3bb933e1eda111625f527725d3e3b8a7990560a4a50271fce090fcd1f525a9ddb5ceac20646afa5d383a84eab00c88fb6041899ebc1a6ce0b10a2fe00a7b6f7c0a23d6bb4c02237a4eaf7a8b8a748e1273a873d8b0b48526a6b96675163bd20d452050d530bd2cad6849a7087663a3aa3d11a2063716e4bd0279f1c369538d491b891301126310abb5b3b2ed1c2d4547fecd0feba29fa1a14b641e2cb5669cc6225a0f9c573ef3dd2a4b8f820afe63a639538d4dc52c1b76380ed3f6e9507c40f1a68412585acea0e5a8b5f00bfb15187ed84a65db1dba5e2c2a8234cc3acb15b354c3072e5f9e330f12aa6a323e4f98185050a161621fcaa6a0067697420c5a9509ed35724a623e36963fa80a5831d6925b2a89be18935147cfc2d390cbe39f3e44a4951f3a6c078c10d2c241c6e9a1e84188b36abee3c045d61325ba73b12c54844a2debf93d2d5374679f9aaa668278893e0ef65c</span>
+<span class="n">c2</span><span class="o">=</span> <span class="mh">0xb9aa388ec95aa402d590ffd57ccb8cc1c741060cf4a33147ff5b030b8ab160d7475befb59a5221ab48a4567977f40ce5a60ec32ed35d21f05f3d9a3c4f0cc129f8bb71193cd14752e9b446132fca31402fc38d32b41b5cd98b8d56b03e360ab778158f2b529b95adcef7014fb7914958f73eb866232d58c06034c9050e94dd47bca4b43b7d3c9990171b68fced26ec22779a229cbd5d89b46110bfb17efcd68a6f786502a3e3e94dfac11b30108109ed331d2b3d69a70716d48420f0c1b43e954a09d1bf8a47f73360db789df6fdfc5ae360fc6d2d5952e41f1ce4def3ce2454007711c7c0fd4359c30fea7357e6ec1c5e61a42e908c0d01cb145795b44bf505</span>
+<span class="n">d</span> <span class="o">=</span> <span class="mi">98099084361187641892367838720535907642384507854400227061381270492608084322671</span>
+<span class="n">k</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c1</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">n</span><span class="p">)</span>
+<span class="n">K</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">g</span><span class="p">,</span><span class="n">k</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
+<span class="n">Ki</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">K</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
+<span class="n">m</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">c2</span><span class="o">*</span><span class="n">Ki</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">a</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="n">m</span><span class="p">))</span>
+</code></pre></div>
+
+<p>This prints :</p>
+<p>which we assume is root password, paste that in ssh root and we get the flag.</p>
+<p>Flag:</p>
+<h2><strong>Buggy Time Machine</strong></h2>
+<p>Looking at the code, it looks like a PRNG (Psuedo Random Number Generator), this type has been seen before and can be broke with Linear Congruential Equations. </p>
+<p>This challenge is pretty straightforward compared to other crypto challenges, only slight difference being the hops, which can be solved with some basic number theory.</p>
+<p>Regardless, we will go over it. The goal of this challenge is to enter seed in <strong>predict_year</strong> function to 2020 to get the flag.</p>
+<p>Looking at the source, we are not given any of the values <strong>n</strong>, <strong>m</strong>, and <strong>c</strong> , the seed seems to be random, we can write it down as a congruential equation to make sense of it:
+<script type="math/tex; mode=display">
+year_{\mathrm{n}}\equiv (year_{\mathrm{n-1}}*m+c) \mod n
+</script>
+As they are 3 unknown variables, the way to solve this would with 6 equations which we can get from the function <strong>next_year</strong>, to solve and get all the variables in the equations.</p>
+<p>Now we can calculate the <strong>next_year</strong> if we have the initial seed or any of the other year from the function, but to get the flag we need to calculate enter a seed such that after a certain number of hops we get end up with the year 2020. We are given the number the number of hops when you net-cat to the server, and it seemed constant, so all there is left is to find a seed that will end at 2020 after several hops.</p>
+<p>We know the equation has to end up at 2020, we can calculate the seed backwards through this method, we write this down mathematically to be clearer: 
+<script type="math/tex; mode=display"> (year_1-c)*m^{-1}\equiv (year_{\mathrm{0}}) \mod n  </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> (year_2-c)*m^{-1}\equiv (year_{\mathrm{1}}) \mod n  </script>
+</p>
+<p>
+<script type="math/tex; mode=display">  (year_3-c)*m^{-1}\equiv (year_{\mathrm{2}}) \mod n </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> . </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> . </script>
+</p>
+<p>
+<script type="math/tex; mode=display">  (2020-c)*m^{-1}\equiv (year_{\mathrm{hops}}) \mod n </script>
+</p>
+<p>Finally, we can code all this up this python and here's the script:</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">gcd</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">reduce</span>
+<span class="kn">import</span> <span class="nn">json</span>
+<span class="kn">import</span> <span class="nn">requests</span>
+<span class="n">states</span> <span class="o">=</span> <span class="p">[]</span>
+<span class="k">def</span> <span class="nf">crack_unknown_increment</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">modulus</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">):</span>
+    <span class="n">increment</span> <span class="o">=</span> <span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">multiplier</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulus</span>
+    <span class="k">return</span> <span class="n">modulus</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">,</span> <span class="n">increment</span>
+<span class="k">def</span> <span class="nf">crack_unknown_multiplier</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">modulus</span><span class="p">):</span>
+    <span class="n">multiplier</span> <span class="o">=</span> <span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span> <span class="o">-</span> <span class="n">states</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">*</span> <span class="nb">pow</span><span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">states</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span><span class="n">modulus</span><span class="p">)</span> <span class="o">%</span> <span class="n">modulus</span>
+    <span class="k">return</span> <span class="n">crack_unknown_increment</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">modulus</span><span class="p">,</span> <span class="n">multiplier</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">crack_unknown_modulus</span><span class="p">(</span><span class="n">states</span><span class="p">):</span>
+    <span class="n">diffs</span> <span class="o">=</span> <span class="p">[</span><span class="n">s1</span> <span class="o">-</span> <span class="n">s0</span> <span class="k">for</span> <span class="n">s0</span><span class="p">,</span> <span class="n">s1</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">states</span><span class="p">[</span><span class="mi">1</span><span class="p">:])]</span>
+    <span class="n">zeroes</span> <span class="o">=</span> <span class="p">[</span><span class="n">t2</span><span class="o">*</span><span class="n">t0</span> <span class="o">-</span> <span class="n">t1</span><span class="o">*</span><span class="n">t1</span> <span class="k">for</span> <span class="n">t0</span><span class="p">,</span> <span class="n">t1</span><span class="p">,</span> <span class="n">t2</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">diffs</span><span class="p">,</span> <span class="n">diffs</span><span class="p">[</span><span class="mi">1</span><span class="p">:],</span> <span class="n">diffs</span><span class="p">[</span><span class="mi">2</span><span class="p">:])]</span>
+    <span class="n">modulus</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="n">reduce</span><span class="p">(</span><span class="n">gcd</span><span class="p">,</span> <span class="n">zeroes</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">crack_unknown_multiplier</span><span class="p">(</span><span class="n">states</span><span class="p">,</span> <span class="n">modulus</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">):</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;http://docker.hackthebox.eu:31044/next_year&quot;</span><span class="p">)</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+    <span class="n">states</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="nb">int</span><span class="p">(</span><span class="n">j</span><span class="p">[</span><span class="s1">&#39;year&#39;</span><span class="p">]))</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">c</span> <span class="o">=</span> <span class="n">crack_unknown_modulus</span><span class="p">(</span><span class="n">states</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">,</span><span class="n">c</span><span class="p">)</span>
+<span class="n">s7</span> <span class="o">=</span> <span class="p">(</span><span class="n">states</span><span class="p">[</span><span class="mi">6</span><span class="p">]</span><span class="o">*</span><span class="n">m</span> <span class="o">+</span> <span class="n">c</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;http://docker.hackthebox.eu:31044/predict_year&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;year&#39;</span><span class="p">:</span> <span class="n">s7</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+<span class="n">hops</span> <span class="o">=</span> <span class="mi">876578</span>
+<span class="n">year</span> <span class="o">=</span> <span class="mi">2020</span>
+<span class="c1"># inverse = modinv(m, n)</span>
+<span class="n">inverse</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">hops</span><span class="p">):</span>
+    <span class="n">year</span> <span class="o">=</span> <span class="p">(</span><span class="n">year</span> <span class="o">*</span> <span class="n">inverse</span><span class="p">)</span> <span class="o">%</span> <span class="n">n</span>
+<span class="n">r</span> <span class="o">=</span> <span class="n">requests</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;http://docker.hackthebox.eu:31044/travelTo2020&quot;</span><span class="p">,</span> <span class="n">json</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;seed&#39;</span><span class="p">:</span> <span class="n">year</span><span class="p">})</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">r</span><span class="o">.</span><span class="n">text</span><span class="p">)</span>
+</code></pre></div>
+
+<p>And we get the Flag</p>
+<h2><strong>Baby Rebellion</strong></h2>
+<p>Last Crypto Challenge, we are given 3 certificates and a challenge file. We can open the challenge file in txt and get text about the challenge:</p>
+<div class="codehilite"><pre><span></span><code>To: <span class="s2">&quot;Andromeda&quot;</span> &lt;andromeda@cyb.org&gt;, <span class="s2">&quot;Mechi&quot;</span> &lt;mechi@cyb.org&gt;, <span class="s2">&quot;Corius&quot;</span> &lt;corius@cyb.org&gt;
+From: <span class="s2">&quot;Dr Greez&quot;</span> &lt;dr.greez@cyb.org&gt;
+Subject: Request <span class="k">for</span> supplies
+MIME-Version: <span class="m">1</span>.0
+Content-Type: application/pkcs7-mime<span class="p">;</span> smime-type<span class="o">=</span>enveloped-data<span class="p">;</span> <span class="nv">name</span><span class="o">=</span>smime.p7m
+Content-Transfer-Encoding: base64
+Content-Disposition: attachment<span class="p">;</span> <span class="nv">filename</span><span class="o">=</span>smime.p7m
+
+MIIFkQYJKoZIhvcNAQcDoIIFgjCCBX4CAQAxggSXMIIBggIBADBsMF8xCzAJBgNV
+BAYTAlVTMQ8wDQYDVQQIDAZOZXZhZGExEDAOBgNVBAcMB1Vua25vd24xDzANBgNV
+BAoMBkN5Ym9yZzEcMBoGCSqGSIb3DQEJARYNbWVjaGlAY3liLm9yZwIJAKDnC94/
+ymViMAsGCSqGSIb3DQEBAQSCAQC1joK+oOelZiSpjRKr4rbcNsZ3qC0prjukGj6m
+DXHjAS67O3fJNOfd7xt3Pq1/a7MVHfeIykVtiWvMo4tlD5SlrBdTo2w4ihDfXo44
+J9aVufhK5RKlzuQ8eK8WNT9ODZC54vxKvSANWQ9s5THR18+y93TK6+RCyi4opCxU
+w+k4O2zbxcF68lNK7DkhMxrsbukp5juwjLEFYDmo9fbjCnUbDsPcZmepU1CLr62r
+6gbEHdULUFb6r0mqXN24On462glsaNIK128cKZmHRWlzceP3Fc0zv+4E767ZNhSP
+nHC2ANL4DfRZ62eFhQmmzELvIkadMMnGKe+oJ8w83wvq6s9qMIIBgwIBADBtMGAx
+CzAJBgNVBAYTAlVTMQ8wDQYDVQQIDAZOZXZhZGExEDAOBgNVBAcMB1Vua25vd24x
+DzANBgNVBAoMBkN5Ym9yZzEdMBsGCSqGSIb3DQEJARYOY29yaXVzQGN5Yi5vcmcC
+CQCp7SgGzZFINTALBgkqhkiG9w0BAQEEggEAGhBZcEHeCmYfGb4zXjip5/pEM/pf
+0eyjLwXPh9fMrA6wcf7zgHhoDjevcAgmHnhSUiEEdvQNR3h7/W5Ifl2fErx6wJn4
+<span class="m">5</span>/G/9Zy9uqib6d9mmJs6hAMbCqPKD+tR0gncN+nsFLVHWdB1SHDb8Gys5zIY8+/V
+PVg3CR7EPV8ILsp3DSa6HOoC6EU5/sD0TOaNIr3aX96CdeWC7VzAReU+3fZAxSzF
+cVzWA+8yteREADjtn/+aZm/E+3xM9ElwodcdinVb0WtDqm14SzUe3Quhq6xECUH3
+1q08rfLe0C/DtioBemnxFXIIGK5LuPyVjwZV4SXHZpTZ2LGHipemxMPBWDCCAYYC
+AQAwcDBjMQswCQYDVQQGEwJVUzEPMA0GA1UECAwGTmV2YWRhMRAwDgYDVQQHDAdV
+bmtub3duMQ8wDQYDVQQKDAZDeWJvcmcxIDAeBgkqhkiG9w0BCQEWEWFuZHJvbWVk
+YUBjeWIub3JnAgkA8kWOkc0932UwCwYJKoZIhvcNAQEBBIIBAF+LTGJtPYgS30J3
+UBb7XY+i+FSaA3HPeew/VzY6IyZF8l656jAOkwY/IYNeEmX0mTjAvSOIyO9JpPVr
+JVNfOBZfwZ1At+WSseMRYpJzrxoOkxqhUAF4E9jRL/ON1WPr94SCg3x049zkZ2fB
+ZeFJZ9njqV4AKGl23NyViW6Hi/CLuKinZ0Lu4DGEy1txpc+XBD57+2Aa/TAJJwJ8
+kmRkSmrrKV24kvXS5Ns4c8OgiMPnWtGVqkWM6SZJS0EfPDZiZScGmLuMkDddgRS4
+Czb5fzUnK7Vzgn6DthSKSakgqnchMOC67ikETgvX2JGjERpqy5RG+IJlkTL2Va8d
+7wlJbqkwgd0GCSqGSIb3DQEHATAdBglghkgBZQMEASoEEF94VSuj0vFWgwmVP3Np
+QwWAgbBJf9OIynRQt6XAKq4lCjvmCzZ7QTKBnxOc+L/GxYlUK4CqLFfQyMDV2kZL
+6UGShVipeLJA8vGy9rCX+LWkpP1RKqis5SuEWixTLProB8yBgYr/apINIY8Zn/Al
+uY/nvjemCyInvc7ekqs1Sl3UmsFV3Un1DGm5WvF9QKeGf2gmt9/BdTMn9FjL9kHK
+<span class="nv">CAqmVoYWiZMxBjNeUro8S2f8pyUiR5Wqfp2o8F87WSkD4HD6mQ</span><span class="o">==</span>
+</code></pre></div>
+
+<p>As we can see, the mail seem to addressed to the three recipients and there seem to be a common message that is sent to all three of them.</p>
+<p>We can open the three .cert files in online parser or with python modules, we used the former again for less clutter in the code and get the <strong>n</strong> and <strong>e</strong> values of the respective recipients. </p>
+<p>We notice that the mail is in the form <strong>.p7m</strong> which is a encrypted email, and we can open the base64 encoding in an ASN.1 parser which we used again online. We used https://lapo.it/asn1js/ to parse that base64.</p>
+<p>There seems to be an rsa ciphertext addressed to each recipient in the certificate and a AES-256 IV and data which we assume is the flag.</p>
+<p>Calculating the common message is quite easy, we use C.R.T (Chinese Remainder Theorem) these 3 ciphertexts as they have the same message, we will write it down for clarity:
+<script type="math/tex; mode=display">
+\begin{aligned}
+m\equiv c_1 \mod n_1
+\\\\ m\equiv c_2 \mod n_2
+\\\\ m\equiv c_3 \mod n_3
+\end{aligned}
+</script>
+As they have the same message, we can use Hastad's Brodcast Attack to calculate the message <strong>m</strong> with crt, here's my implementation of that in sage:</p>
+<p>This gives us the common message <strong>m</strong> that was sent to the recipients, which is just garbage bytes of data but we can use this as an AES key to get the flag, and use the last part of the ASN parser as IV and data respectively, here's the code for the rest in python:</p>
+<p>Which gives us a message and a flag..</p>
+<p>Flag:</p>
+<h2><strong>Plug</strong></h2>
+<p>We are given a pcap file which we can look through in wireshark. </p>
+<p>After snooping around a big you find a packet with PNG header which can be found easily by arranging the packets by length.</p>
+<p>We copy the hex stream and write it to a png file, here's the script for that in python:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">p</span> <span class="o">=</span> <span class="s1">&#39;89504e470d0a1a0a0000000d49484452000000c8000000c80806000000ad58ae9e0000078d49444154789ced9941922c290cc5fafe979e59f78f804cdcd8298314c1d2f0ecb436553fff89c8909faf038890511091090a2232414144262888c804051199a02022131444648282884c501091090a22326159909f9f9ff6273cac843babb364d47539a1392f17001a5510055110d8a09e7aaf4641140435a8a7deab511005410deaa9f76a14444150837aeabd1a055110d4a09e7aaf46411a0a42a27a1132eeecd2030905794997e522bd9731cf6a14e4255d968bf45ec63cab51909774592ed27b19f3ac46415ed265b948ef65ccb31a05794997e522bd9731cf6a14e4255d968bf45ec63cab692b086949a254f740ca72eb7757904dbd2b48ef9cc3fb960b2e1dd4173d90b2dcfadd156453ef0ad23be7f0bee5824b07f5450fa42cb77e7705d9d4bb82f4ce39bc6fb9e0d2417dd10329cbaddf5d4136e5acce72420fa49cc3fb960b0e1f54972c27f440ca39bc6fb9e0f04175c972420fa49cc3fb960b0e1f54972c27f440ca39bc6fb9e0f04175c972420fa49cc3fb960b0e1f54972c27f440ca39bc6fb9e0f04175c972420fa49cc3fb960b2e1dd413a4b990e6d925e7f0bee5824b07f504692ea47976c939bc6fb9e0d2413d419a0b699e5d720eef5b2eb874504f90e6429a67979cc3fb960b2e1dd413a4b990e6d925e7f0bee5824b07f504692ea47976c939bc6fb9e0d2413d419a0b699e5d720eef5b2e285ebc28a445a8a6c3e265a1202f5110055190090aa2200a3241411444412628888228c8040551100599a0200a8213a4cbc918f0cd755d4e040559e8cfbade2782822cf4675def13414116fab3aef789a0200bfd59d7fb44509085feaceb7d2228c8427fd6f53e11583f625fc8ee0f4a7baf3b4ee56314848d53f9180561e3543e4641d838958f5110364ee56314848d53f9180561d3fa7f90d37356d791b264d445501070ceea3a52968cba080a02ce595d47ca9251174141c039abeb485932ea2228083867751d294b465d040501e7acae2365c9a88ba020e09cd575a42c197511b60a12adeb32e0ca0ff3f41e49f28cfe28772a888228c8ecbeaa000ab2ced752288882288882ccefab0aa020eb7c2d858228888228c8fcbeaa000ab2ced7522848409028d51fad8b90a4737aef1114e4b225b9b9f7080a72d992dcdc7b0405b96c496eee3d82825cb62437f71e41412e5b929b7b8fa020972dc9cdbd47d82ac8ee705fbcd7e1a3fda5f7ea9cd52848f27b0aa220bfee2387fbe23d0551905ff791c37df19e8228c8affbc8e1be784f4114e4d77de4705fbca7200af2eb3e72b82fde531005f9755f5580ea0f4a5aa06ae94839a350b228c8a6f7aa7be892330a258b826c7aafba872e39a350b228c8a6f7aa7be892330a258b826c7aafba872e39a350b228c8a6f7aa7be892330a258b826c7aafba872e39a350b2e0052165a95eca8c2cd587d443040551100599655c2e501005519058531975a42c0aa220cf050aa2200a126b2aa38e94454114e4b94041144441624d55d7913e6806a49ca4592bc8cb3ad247cb809493346b05795947fa681990729266ad202feb481f2d03524ed2ac15e4651de9a36540ca499ab582bcac237db40c483949b356909775a48f9601292769d6470a12bdb37a29bbe4ac5ebc2e2888823c66e9d243060aa2208f59baf490818228c863962e3d64a0200af298a54b0f192888823c66e9d243060aa2208f59baf490c191826490b140a767211d0a0ab2a9ee842ca443414136d59d9085742828c8a6ba13b2900e0505d954774216d2a1a0209bea4ec8423a14146453dd09594887022709848c0fda65d133a8ceb9bb3f05f9870e1fed2f391564317fa8ea603a7cb4bfe45490c5fca1aa83e9f0d1fe92534116f387aa0ea6c347fb4b4e0559cc1faa3a980e1fed2f391564317fa8ea603a7cb4bfe45490c5fc8486ab4f467f51be9e45f6e29166167aab2a1ce950864f9b673467465dc6cc426f5585231dcaf069f38ce6cca8cb9859e8adaa70a443193e6d9ed19c197519330bbd55158e7428c3a7cd339a33a32e6366a1b7aac2910e65f8b479467366d465cc2cf4565538d2a10c9f36cf68ce8cba8c9985deda198e44754e92581975d539292848c17b0ac2df97110a52f09e82f0f765848214bca720fc7d19a12005ef29087f5f462848c17b0ac2df97110a52f09e82f0f765449920d105aa5e849b73920e05053127f250501073220f05053127f250501073220f05053127f250501073220f0505f9b8bf28d5cb45fa7e95b356908ffb8ba2200aa220093933de539097c1490d93ea1484bf2fc31c3b07456a9854a720fc7d19e6d8392852c3a43a05e1efcb30c7ce41911a26d529087f5f8639760e8ad4f0cd7594e57a82f4dd87f7ed6c2a5a471ad409750aa220ad16b6ba4e4114a4d5c256d7298882b45ad8ea3a055190560b5b5da7200ad26a61abeb14a4a120d59cbe78d5394f984be8beaf0364a120bd4fc65c42f77d1d200b05e97d32e612baefeb00592848ef933197d07d5f07c842417a9f8cb984eefb3a40160ad2fb64cc2574dfd701b25090de27632ea1fb7606e87232fa8b9291f3f42c95df484136f517a5cb5292b2288882e096929445411404b794a42c0aa220b8a52465511005c12d25298b8228086e294959d08288dc8482884c501091090a2232414144262888c804051199a02022131444648282884c501091090a223241414426fc0ff1b2c0879d39a3b20000000049454e44ae42608200000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000&#39;</span>
+<span class="n">p</span> <span class="o">=</span> <span class="nb">bytes</span><span class="o">.</span><span class="n">fromhex</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+<span class="nb">open</span><span class="p">(</span><span class="s1">&#39;flag1.png&#39;</span><span class="p">,</span><span class="s1">&#39;wb&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">p</span><span class="p">)</span>
+</code></pre></div>
+
+<p>Which turns out to be a QR code. We then use QR code scanner to get the flag.</p>
+<p>Flag:</p>
+<h1>HTB FINALS writeups</h1>
+<h2>Locked Out</h2>
+<p>We are given <code>encryption.py</code> , <code>new_password</code> and <code>leaks</code>. Where, <code>new_password</code> is the cipher-text and <code>leaks</code> is the <code>public-exponents</code> also some additional information. Let's look at the python source :</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="o">*</span>
+<span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">getrandbits</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">gmpy2</span>
+<span class="n">bits</span><span class="o">=</span><span class="mi">1024</span>
+
+
+<span class="k">def</span> <span class="nf">generate_prime</span><span class="p">(</span><span class="n">bits</span><span class="p">):</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="mi">2</span>
+    <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+        <span class="n">a</span><span class="o">=</span> <span class="n">getrandbits</span><span class="p">(</span><span class="n">bits</span><span class="p">)</span>
+        <span class="n">a</span> <span class="o">=</span> <span class="n">a</span><span class="o">**</span><span class="n">m</span>
+        <span class="n">prime</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">a</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">gmpy2</span><span class="o">.</span><span class="n">is_prime</span><span class="p">(</span><span class="n">a</span> <span class="o">+</span><span class="n">i</span><span class="p">):</span>
+                <span class="n">prime</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span><span class="n">i</span>
+                <span class="n">r</span> <span class="o">=</span> <span class="n">i</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">prime</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> <span class="k">continue</span>
+        <span class="k">return</span> <span class="n">prime</span><span class="p">,</span> <span class="n">r</span>
+
+<span class="n">p</span><span class="p">,</span> <span class="n">rp</span> <span class="o">=</span> <span class="n">generate_prime</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+<span class="n">q</span><span class="p">,</span> <span class="n">rq</span> <span class="o">=</span> <span class="n">generate_prime</span><span class="p">(</span><span class="mi">512</span><span class="p">)</span>
+
+<span class="n">n</span> <span class="o">=</span> <span class="n">p</span> <span class="o">*</span> <span class="n">q</span>
+<span class="n">e</span> <span class="o">=</span> <span class="mi">65537</span>
+
+<span class="n">msg</span> <span class="o">=</span> <span class="n">sys</span><span class="o">.</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">encode</span><span class="p">()</span>
+
+<span class="n">msg</span> <span class="o">=</span> <span class="n">bytes_to_long</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+<span class="n">ct</span> <span class="o">=</span> <span class="nb">hex</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">e</span><span class="p">,</span><span class="n">n</span><span class="p">))</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;new_password&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="n">ct</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="s1">&#39;leaks&#39;</span><span class="p">,</span> <span class="s1">&#39;w&#39;</span><span class="p">)</span>
+<span class="n">f</span><span class="o">.</span><span class="n">write</span><span class="p">(</span><span class="nb">str</span><span class="p">({</span><span class="s1">&#39;n&#39;</span><span class="p">:</span><span class="n">n</span><span class="p">,</span> <span class="s1">&#39;rp&#39;</span><span class="p">:</span><span class="n">rp</span><span class="p">,</span> <span class="s1">&#39;rq&#39;</span><span class="p">:</span><span class="n">rq</span><span class="p">}))</span>
+<span class="n">f</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+</code></pre></div>
+
+<p>We see that <code>generate_prime(bits)</code> is a prime number generator, but it is quite evident that the method is weak from the way it is generated, let's look at the function closely..</p>
+<p>We see that some random 512 bits number was generated which is squared and is added to some number. This addition is done until a prime is found. After which, the prime and number added to it is returned, lets write this down mathematically. 
+<script type="math/tex; mode=display">
+\begin{aligned}
+p = a^{2}+r_p \newline q=b^{2}+r_q
+\end{aligned}
+</script>
+These primes are then multiplied then the rest is standard RSA procedure.. But lets look at the primes once again, my first thought looking at this was writing N as product in that form, I shall write it out</p>
+<p>
+<script type="math/tex; mode=display"> N=p*q </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> N=(a^{2}+r_p)*(b^{2}+r_q) </script>
+</p>
+<p>this implies</p>
+<p>
+<script type="math/tex; mode=display">  \text{N}=a^{2}\times b^{2}+a^{2}*r _ q+b^{2}\times r _ p+r _ p\times r _ q  </script>
+</p>
+<p>
+<script type="math/tex; mode=display">  \text{N}-r _ p\times r _ q=a^{2}\times b^{2}+a^{2}\times r _ q+b^{2}\times r _ p  </script>
+</p>
+<p>My intuition here was was solving this in form of a polynomial and taking the roots, but the <code>a^2*b^2</code> was the annoying part, which got me stumped, but i googled for something similar perhaps to find prime generators that can be solved this way, which got me a hit for this https://einspem.upm.edu.my/journal/fullpaper/vol13saugust/8.pdf . This paper essentially solves these sort of prime generators but i would like to discuss more maths of this paper as i previously stated my intuition for this challenge was somewhere on the right track...</p>
+<p>What the next step after subtracting it from big <code>N</code> was taking the modulus so that <code>a^2*b^2</code> gets removed, as we then would be able to solve for equation and get the roots for it. Let's write this out</p>
+<p>
+<script type="math/tex; mode=display"> (N-rp\times rq)\equiv(a^{2}\times r_q+b^{2}\times r_p)\mod{a^{2}\times b^{2}} </script>
+</p>
+<p>We know,</p>
+<p>
+<script type="math/tex; mode=display"> x^{2}+(a+b)x+ab=0</script>
+</p>
+<p>
+<script type="math/tex; mode=display"> x^{2}+(a+b)x+ab=0 </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> Similarly,\ we \ write \ down, </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> x^{2}+(a^{2}\times r _ q+b^{2}*r _ p)*x+a^{2}\times r _ p\times b^{2}\times r _ q=0\ </script>
+</p>
+<p>
+<script type="math/tex; mode=display">roots\ of \ this \ equation \ are,</script>
+</p>
+<p>
+<script type="math/tex; mode=display"> (x+a^{2}\times r_q)\times (x+b^{2}\times r_p)=0 </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> i.e, </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> x_1=a^{2}\times r_q \ \ and\ \ x_2=b^{2}\times r_p </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> p=\frac{x_1}{r_q}+r_p </script>
+</p>
+<p>
+<script type="math/tex; mode=display"> q=\frac{x_2}{r_p}+r_q </script>
+</p>
+<p>Which gives us the prime factors of <code>N</code>, depending on the roots of the equation, these roots if they are an integer will be a factor of <code>N</code>, But this question is how do we take modulus <code>a^2*b^2</code> if we don't know <code>a</code> and <code>b</code>, the answer to this is <strong>BRUTE-FORCE</strong>, yes, as explained by the paper we take the square root of <code>N</code> and <code>rp*rq</code>, then iterate till the only factor that is left is <code>a^2*b^2</code>, let's write this down again:</p>
+<p>
+<script type="math/tex; mode=display">(\sqrt N-x)^2=a^2*b^2</script>
+</p>
+<p>
+<script type="math/tex; mode=display"> where,\ x \simeq \sqrt{(rp\times rq)}-\sqrt{(a^{2}\times rq+b^{2} \times rp)} </script>
+</p>
+<p>This is my understanding of the maths behind the algorithm, we can just refer to page 7 of the above paper and look for factors in the similar way, here is my implementation of the algorithm in sage:</p>
+<div class="codehilite"><pre><span></span><code><span class="n">rp</span> <span class="o">=</span> <span class="mi">228</span>
+<span class="n">rq</span> <span class="o">=</span> <span class="mi">75</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">18627060853366003817633498319725128072935605420672144028180887821598995058566763870406708181052681986936527075954895204088200290386963730876047423903233595643471077586653831691013827267874620159258094222853259785361633293190228850242828942973252729075142510154777682987087560910570468443515976133521357279350135180187709921165306439775516983770374718903851808402718506713073936579721447055524042778187890314247383276126544626388594005451861656297486009721524593236438272682590796161812616558556489424502887789415628561091674949871825109470840186278129161368348123380425008804948098905894644488816022732318170994842927</span> 
+<span class="n">i</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">rp</span><span class="o">*</span><span class="n">rq</span><span class="p">))</span>
+<span class="k">while</span> <span class="n">i</span><span class="o">&lt;</span><span class="n">floor</span><span class="p">(</span><span class="n">rq</span><span class="o">/</span><span class="mi">2</span><span class="o">+</span><span class="n">rp</span><span class="o">+</span><span class="mi">1</span><span class="p">):</span>
+    <span class="n">sig</span> <span class="o">=</span> <span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">sqrt</span><span class="p">(</span><span class="n">N</span><span class="p">))</span><span class="o">-</span><span class="n">i</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span>
+    <span class="n">z</span> <span class="o">=</span> <span class="p">(</span><span class="n">N</span> <span class="o">-</span> <span class="n">rp</span><span class="o">*</span><span class="n">rq</span><span class="p">)</span><span class="o">%</span><span class="n">sig</span>
+    <span class="n">i</span><span class="o">+=</span><span class="mi">1</span>
+    <span class="n">R</span> <span class="o">=</span> <span class="n">PolynomialRing</span><span class="p">(</span> <span class="n">ZZ</span><span class="p">,</span><span class="s1">&#39;x&#39;</span><span class="p">)</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">R</span><span class="o">.</span><span class="n">gen</span><span class="p">()</span>
+    <span class="n">f</span> <span class="o">=</span> <span class="n">x</span><span class="o">^</span><span class="mi">2</span> <span class="o">-</span> <span class="n">z</span> <span class="o">*</span> <span class="n">x</span> <span class="o">+</span> <span class="n">rp</span><span class="o">*</span><span class="n">rq</span><span class="o">*</span><span class="n">sig</span>
+    <span class="n">a</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">roots</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">a</span> <span class="o">==</span><span class="p">[]:</span>
+        <span class="k">continue</span>
+    <span class="k">else</span><span class="p">:</span>
+       <span class="n">x1</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">roots</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">0</span><span class="p">]</span>
+       <span class="n">x2</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">roots</span><span class="p">()[</span><span class="mi">0</span><span class="p">][</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">gcd</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">x1</span><span class="o">/</span><span class="n">rp</span><span class="o">+</span><span class="n">rq</span><span class="p">)</span><span class="o">!=</span><span class="mi">1</span> <span class="ow">or</span> <span class="n">gcd</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">x2</span><span class="o">/</span><span class="n">rq</span><span class="o">+</span><span class="n">rp</span><span class="p">)</span><span class="o">!=</span><span class="mi">1</span><span class="p">)</span> <span class="ow">and</span> <span class="p">((</span><span class="n">x1</span><span class="o">/</span><span class="n">rp</span><span class="o">+</span><span class="n">rq</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ZZ</span> <span class="ow">or</span> <span class="p">(</span><span class="n">x2</span><span class="o">/</span><span class="n">rq</span><span class="o">+</span><span class="n">rp</span><span class="p">)</span> <span class="ow">in</span> <span class="n">ZZ</span><span class="p">)</span> <span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">gcd</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">x1</span><span class="o">/</span><span class="n">rp</span><span class="o">+</span><span class="n">rq</span><span class="p">))</span> <span class="c1">#123880731118078606990137525967538331116275498654165135288667481763468359990787854975994876893087359471477116036463781441086420155388498641200190619570949282848164235074476184966442200869534040008670271367209107524675332904145907801965290873060668160752216813566725872730131480362642158718779920761925401528651</span>
+        <span class="nb">print</span><span class="p">(</span><span class="n">gcd</span><span class="p">(</span><span class="n">N</span><span class="p">,</span><span class="n">x2</span><span class="o">/</span><span class="n">rq</span><span class="o">+</span><span class="n">rp</span><span class="p">))</span> <span class="c1"># 1/75</span>
+        <span class="k">break</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">continue</span>
+</code></pre></div>
+
+<p>Rest is pretty much textbook RSA using the ciphertext from <code>new_password</code>, I shall leave my code for that and the output for it</p>
+<div class="codehilite"><pre><span></span><code><span class="kn">from</span> <span class="nn">Crypto.Util.number</span> <span class="kn">import</span> <span class="n">long_to_bytes</span>
+<span class="n">N</span> <span class="o">=</span> <span class="mi">18627060853366003817633498319725128072935605420672144028180887821598995058566763870406708181052681986936527075954895204088200290386963730876047423903233595643471077586653831691013827267874620159258094222853259785361633293190228850242828942973252729075142510154777682987087560910570468443515976133521357279350135180187709921165306439775516983770374718903851808402718506713073936579721447055524042778187890314247383276126544626388594005451861656297486009721524593236438272682590796161812616558556489424502887789415628561091674949871825109470840186278129161368348123380425008804948098905894644488816022732318170994842927</span>
+<span class="n">p</span> <span class="o">=</span> <span class="mi">123880731118078606990137525967538331116275498654165135288667481763468359990787854975994876893087359471477116036463781441086420155388498641200190619570949282848164235074476184966442200869534040008670271367209107524675332904145907801965290873060668160752216813566725872730131480362642158718779920761925401528651</span>
+<span class="n">q</span> <span class="o">=</span> <span class="n">N</span><span class="o">//</span><span class="n">p</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mh">0x15f8468e603cfe7eca368ebf666b98d918686148336e2ffae048dc7dc7d4a399b1c6bff22140a79628c6a66e8d85fcc2d39505f15ec77295d373091c56a57de9472adf673d56307fa7fd2c7a3e2dc2d57c9380a5d332aa4c3592c08da22aa82667ebe7536a104e814c3f06dff9632f26fff3e52c711416abded102fa5377fce6dadcad3ac4d6197da69002817d00d3f765e71d73070fe1d5b1d8f1bf9a148ea026371c2d19debe317d96e9f1911f07286f90b8d9f9ff35d6b886f2f9b171b112f27e96c199e6f70501b282475c5ade73abe1c6bf39aada6507ab080aeccd11942171d83a28fb9c5aaeb7b40cf0a628946d6d46c40534e2fd3d65bf6e718435ce</span>
+<span class="n">e</span> <span class="o">=</span> <span class="mi">65537</span>
+<span class="n">d</span> <span class="o">=</span> <span class="nb">pow</span><span class="p">(</span><span class="n">e</span><span class="p">,</span><span class="o">-</span><span class="mi">1</span><span class="p">,(</span><span class="n">p</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">*</span><span class="p">(</span><span class="n">q</span><span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">long_to_bytes</span><span class="p">(</span><span class="nb">pow</span><span class="p">(</span><span class="n">c</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="n">p</span><span class="o">*</span><span class="n">q</span><span class="p">)))</span>
+</code></pre></div>
+
+<p>which prints,  <code>b'The password is 4p7gr0p0w3ndU'</code></p>
+<p>Right, so the challenge description had a docker link, which takes us to a website, where you can login, we can assume this is the password for admin, let's this out</p>
+<p><img alt="img" src="https://cdn.discordapp.com/attachments/777617215225987102/818166803024576531/Screenshot_2021-03-07_at_17.02.35.png" /></p>
+<p>Entering that as the password, we get the flag:</p>
+<p><img alt="img" src="https://cdn.discordapp.com/attachments/777617215225987102/818166814378557530/Screenshot_2021-03-07_at_17.02.43.png" /></p>
+
+
+
+</body>
+</html>

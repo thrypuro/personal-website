@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <link rel= "stylesheet" type= "text/css" href= "/static/styles/main-styles/global.css">
+	<link rel= "stylesheet" type= "text/css" href= "/static/styles/main-styles/bundle.css">
+    <script>
+        function hi(text1){
+            document.getElementById("desc").innerHTML = text1;
+        }
+        function fun(a){var b = "";for (let i=0; i<a.length;i++){if(a[i]%2!=0){b+=(String.fromCharCode(a[i]^42));}else{b+=(String.fromCharCode(a[i]^68));}}  return b;}
+        function flee(){
+            var num = Math.floor(Math.random()*100);
+            /* I see you're curious ;)*/
+            if(num==69){
+              var ch = [44, 48, 48, 52, 89, 126, 5, 5, 83, 69, 95, 48, 95, 106, 38, 79, 5, 32, 123, 93, 112, 93, 19, 125, 77, 28, 73, 123];
+              var ct = [32, 75, 71, 81, 32, 75, 48, 117, 93, 75, 89, 117, 79, 62, 87];
+              var t = fun(ch);
+              document.getElementById("Flee").href = t; }
+            else{
+                
+            }
+            
+        }
+        var ina = document.getElementById("insap");
+        
+        
+        function inspa(){
+           document.getElementById("insap").style.display = "block";
+        }
+        window.onclick = function(event) {
+            if (event.target == ina) {
+                ina.style.display = "none";
+                }
+             }
+        function hide(){
+         document.getElementById("hia").style.display = "block";
+         document.getElementById("hnav").style.display = "none";   
+        }
+        function unhide(){
+        document.getElementById("hia").style.display = "none";
+         document.getElementById("hnav").style.display = "block";   
+        
+        }
+    </script>
+</head>
+<body>
+ 
+  
+  <br>
+  <main class="svelte-pmryh4">
+  <div class="home" style="padding: auto; margin-bottom: 100px;"> <h1 class="bee">POSTS</h1> 
+    <br>
+    
+    <h2 class="bee" style="color: white;">2022</h2>
+    <ul class="svelte-pmryh4" style="text-align: center;">
+        
+        <li class="idk" style="font-size: x-small;"> 
+    <a class="saa" style="font-size: medium;" href="c0mm0n_p0lynomial.html"> Author Writeup for challenge I made in pwned3</a> -- 13th March</li>
+        
+    </ul>
+    <h2 class="bee" style="color: white;">2021</h2>
+    <ul class="svelte-pmryh4" style="text-align: center;">
+        
+        <li class="idk" style="font-size: x-small;"> 
+    <a class="saa" style="font-size: medium;" href="bruh.html"> HTB University CTF qualifier and finals writeups</a> 
+    -- 2nd September  </li>
+        
+    </ul>
+  </div>
+ 
+  
+ 
+</body>
+</main>
+<nav id="hia">
+    <a href="/blog"><img id="Blog" class="scaler1 img-blog" src="/static/styles/main-styles/assets/Status.png" alt="aaa" onmouseover="hi('Blog')" onmouseout="hi('Navigation')"></a>
+
+    <a href="/about"><img id="About me" class="scaler1 img-about" src="/static/styles/main-styles/assets/aboutme.png" alt="aaa" onmouseover="hi('About me')" onmouseout="hi('Navigation')"></a>
+
+    <a href="/"><img id="flee" class="scaler1 img-home" src="/static/styles/main-styles/assets/Flee.gif" alt="aaa" style="" onmouseover="hi('Flee (Home)')" onmouseout="hi('Navigation')" onclick="flee()"></a>
+
+    <div class="navi" id="desc">Navigation</div>
+</nav>
+</html>
