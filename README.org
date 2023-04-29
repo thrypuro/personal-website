@@ -1,0 +1,29 @@
+#+title: Readme
+
+
+* Website
+
+Very quick and dirty flask website I made because I lost my Svelte code :waaah:
+
+
+* Setting up
+
+Install all the dependencies
+
+#+begin_src bash
+pip3 -r requirements.txt
+#+end_src
+
+
+* Running
+
+Dynamic website
+#+begin_src bash
+python3 app.py
+#+end_src
+
+Check whether everything is setup properly, once it's ready to deploy. Use
+
+#+begin_src bash
+python3 app.py build
+#+end_src

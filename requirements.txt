@@ -1,0 +1,4 @@
+flask==2.3.1
+markdown==3.4.3
+flask-flatpages==0.8.1
+frozen-flask==0.18
